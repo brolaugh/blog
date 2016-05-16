@@ -7,7 +7,7 @@ A blogging platform
 
 ### Expansion goals
 * Make it a one blog per server instance at first and then switch to multiblog
-
+* Guest blogging
 
 ## Rules
 * One user may have multiple blogs
