@@ -27,6 +27,9 @@ class Post extends \Database
         $this->create_time = $data->create_time;
         $this->publishing_time = $data->publishing_time;
         $this->tags = $this->getTagsFromPostID($this->id);
+
+        $md = new Parsedown();
+        $this->content= $md->parse($this->content);
     }
 
 }

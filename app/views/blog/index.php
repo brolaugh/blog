@@ -15,8 +15,15 @@ $author = $data["author"];
     <header>
 
     </header>
-    <main>
+    <aside>
 
+    </aside>
+    <main>
+        <?php
+        foreach($posts as $post){
+            include '../app/templates/blog/post.php';
+        }
+        ?>
     </main>
     <footer>
 
