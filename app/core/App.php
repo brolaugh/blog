@@ -6,7 +6,7 @@ class App{
 
     public function __construct()
     {
-        $blog = '';
+        $blog = "";
         $url = $this->parseUrl();
         if(file_exists('../app/controllers/' . $url[0] . '.php')){
             if($url[0] != 'blog')
@@ -14,16 +14,16 @@ class App{
             unset($url[0]);
 
         }//blog_exists not yet correctly implemented
-        else if(blog_exists($url[0])){
-            $blog = $url[0];
+        else if($this->blog_exists($url[0])){
             $this->controller = 'blog';
+            $blog = $url[0];
             unset($url[0]);
         }
 
 
         require_once '../app/controllers/' . $this->controller . '.php';
 
-        $this->controller = new $this->controller($blog);
+        $this->controller = ($this->controller = 'blog') ? new $this->controller($blog) : new $this->controller();
 
         if(isset($url[1])){
             if(method_exists($this->controller, $url[1])){
@@ -41,13 +41,8 @@ class App{
         }
 
     }
-}
-    function blog_exists($blog){
-        $a = ['brolaugh', 'kappa', 'jonovski'];
-        foreach($a as $b){
-            if($blog == $b){
-                return true;
-            }
-        }
-        return false;
+    private function blog_exists($blog){
+        $database = new Database();
+        return $database->blog_exists($blog);
     }
+}
