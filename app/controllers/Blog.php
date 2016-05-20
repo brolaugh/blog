@@ -6,14 +6,27 @@ class Blog extends Controller
 
     public function __construct($blog){
         $this->blog = $blog;
-        echo "/$blog/";
     }
 
     public function index($post = ''){
         if(strlen($post) > 0)
             $this->post($post);
-        else
-            echo 'index';
+        else{
+            $blogModel = $this->model("Blog");
+            $blogModel->prepare($this->blog);
+            $authorModel = $this->model("Author");
+            $authorModel->prepare($blogModel->author);
+            $db = new Database();
+            $posts = $db->getPostsByBlog($this->blog);
+            $postModels = [];
+            foreach($posts as $postID){
+                $post = new \models\Blog();
+                $post->prepare($postID);
+                $postModels[] = $post;
+            }
+            $this->view("blog/index", ["blog" => $blogModel, "posts" => $postModels, "author" => $authorModel]);
+        }
+            
     }
     public function post($post){
         echo 'post/' . $post;

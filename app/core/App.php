@@ -14,16 +14,15 @@ class App{
             unset($url[0]);
 
         }//blog_exists not yet correctly implemented
-        else if($this->blog_exists($url[0])){
+        else if($blog = $this->blog_exists($url[0])){
             $this->controller = 'blog';
-            $blog = $url[0];
             unset($url[0]);
         }
 
 
         require_once '../app/controllers/' . $this->controller . '.php';
 
-        $this->controller = ($this->controller = 'blog') ? new $this->controller($blog) : new $this->controller();
+        $this->controller = ($this->controller == 'blog') ? new $this->controller($blog) : new $this->controller();
 
         if(isset($url[1])){
             if(method_exists($this->controller, $url[1])){
