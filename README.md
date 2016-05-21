@@ -1,5 +1,5 @@
 # Blog
-A blogging platform
+A blogging platform written in PHP using the MVC structure
 
 ## Goals
 * Blog posts are written in Markdown

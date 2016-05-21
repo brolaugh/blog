@@ -31,5 +31,11 @@ class Blog extends Controller
     public function post($post){
         echo 'post/' . $post;
     }
-    
+    public function compose($post = "new"){
+        if($post == "new"){
+            //Show empty post form
+        }else{
+            //get $post from database and fill forms
+        }
+    }
 }
