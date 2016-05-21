@@ -5,7 +5,7 @@
   <meta name="description" content="Test"/>
   <meta name="keywords" content="Hello from the others side"/>
   <meta name="author" content="Hannes 'Brolaugh' Kindströmmer">
-  <link rel="stylesheet" href="/public/css/material-design-bootstrap.min.css" charset="utf-8">
+  <link rel="stylesheet" href="/public/css/material-design.min.css" charset="utf-8">
   <title>Brolaugh Blog Platform yo</title>
 </head>
 
