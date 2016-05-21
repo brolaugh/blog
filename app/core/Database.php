@@ -52,9 +52,17 @@ class Database extends DatabaseConfig
         $res = $stmt->get_result();
         $stmt->close();
         $retval = [];
-        while($retval[] = $res->fetch_object()->name);
+        while($row = $res->fetch_object()){
+            $retval[] = $row->name;
+        }
         return $retval;
     }
+
+    /**
+     * @param $blog
+     * @param array $options
+     * @return array
+     */
     public function getPostsByBlog(
         $blog,
         $options = [
@@ -62,31 +70,43 @@ class Database extends DatabaseConfig
             "offset" => 0,
             "sort_order" => "DESC",
             "sort_column" => "create_time",
-            "status" => [4]
+            "status" => [4,3,2,1]
         ]
     ){
         $questionMarks = "";
+        $param = "i";
+        $paramValues = array($blog, $options['sort_column']);
         foreach($options['status'] as $status){
-            if(strlen($questionMarks) == 0)
-                $questionMarks.= $status;
-            else
-                $questionMarks.= ",".$status;
+            if(strlen($questionMarks) == 0){
+                $param.= 'i';
+                $paramValues[] = $status;
+                $questionMarks.= "?";
+            }
+
+            else{
+                $param.= 'i';
+                $paramValues[] = $status;
+                $questionMarks.= ",?";
+            }
         }
+        $param.="sii";
+        //Param should be "i" + "i" count($options['status])+ "sii"
+        array_unshift($paramValues, $param);
+        $paramValues = array_merge($paramValues, [$options['limit'], $options['offset']]);
+        $paramValues = array_values($paramValues);
+        
         $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE blog = ? AND status IN(". $questionMarks .") ORDER BY ? ASC LIMIT ? OFFSET ? ");
-        $stmt->bind_param("iiii", $blog, $options['sort_column'],  $options['limit'], $options['offset']);
-        //$options['sort_order'],
+        call_user_func_array([$stmt, "bind_param"], makeValuesReferenced($paramValues));
+        //$options['sort_order']
         $stmt->execute();
         $res = $stmt->get_result();
 
-        if($stmt->num_rows > 0){
             $stmt->close();
             $retval = [];
-            while($retval[] = $res->fetch_object()->id);
+            while($row = $res->fetch_object()){
+                $retval[] = $row->id;
+            }
             return $retval;
-        }else{
-            $stmt->close();
-            return [];
-        }
 
 
     }
@@ -100,4 +120,11 @@ class Database extends DatabaseConfig
         while($retval[] = $res->fetch_object());
         return $retval;
     }
+}
+function makeValuesReferenced($arr){
+    $refs = array();
+    foreach($arr as $key => $value)
+        $refs[$key] = &$arr[$key];
+    return $refs;
+
 }

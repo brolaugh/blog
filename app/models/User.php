@@ -5,6 +5,7 @@
  * Date: 2016-05-17
  * Time: 14:40
  */
+namespace models;
 class User extends \Database
 {
     public $name;

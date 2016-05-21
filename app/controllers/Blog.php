@@ -14,13 +14,17 @@ class Blog extends Controller
         else{
             $blogModel = $this->model("Blog");
             $blogModel->prepare($this->blog);
+
+            echo "<pre>";
             $authorModel = $this->model("Author");
             $authorModel->prepare($blogModel->author);
+
             $db = new Database();
+
             $posts = $db->getPostsByBlog($this->blog);
             $postModels = [];
             foreach($posts as $postID){
-                $post = new \models\Blog();
+                $post = $this->model("Post");
                 $post->prepare($postID);
                 $postModels[] = $post;
             }
