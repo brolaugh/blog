@@ -6,22 +6,17 @@
  * Time: 20:44
  */
 $blog = $data["blog"];
-$posts = $data["posts"];
 $author = $data["author"];
 ?>
 
-  <?php include('../app/templates/blog/head.php')?>
+<?php include('../app/templates/blog/head.php')?>
 <body>
 <?php include('../app/templates/blog/header.php')?>
 <div class="container-fluid">
     <div class="row">
         <?php include('../app/templates/blog/sidemenu.php')?>
         <main class="col-md-8">
-            <?php
-            foreach($posts as $post){
-                include '../app/templates/blog/post.php';
-            }
-            ?>
+            <?php include('../app/templates/blog/compose.php')?>
         </main>
         <aside class="col-md-2">
             Ads
@@ -31,9 +26,9 @@ $author = $data["author"];
 
 </div>
 <footer class="container-fluid">
-  <script src="js/jquery.min.js" charset="utf-8"></script>
-  <script src="js/bootstrap.min.js" charset="utf-8"></script>
-  <script src="js/material.min.js" charset="utf-8"></script>
-  <script src="js/ripples.min.js" charset="utf-8"></script>
+    <script src="js/jquery.min.js" charset="utf-8"></script>
+    <script src="js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="js/material.min.js" charset="utf-8"></script>
+    <script src="js/ripples.min.js" charset="utf-8"></script>
 </footer>
 </body>

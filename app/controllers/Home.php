@@ -6,12 +6,19 @@
  * Date: 2016-05-17
  * Time: 13:20
  */
-class Home extends Controller
+class home extends Controller
 {
     public function index($name = ''){
         echo 'home/index';
         $user = $this->model('User');
         $user->name = $name;
-        $this->view('index', ['name' => $user->name]);
+        $db = new Database();
+        $blogs = [];
+        foreach($db->getAllBlogs() as $blog){
+            $newBlog = $this->model("blog");
+            $newBlog->prepare($blog);
+            $blogs[] = $newBlog;
+        }
+        $this->view('home/show_all_blogs', ['blogs' => $blogs]);
     }
 }

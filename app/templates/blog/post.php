@@ -1,5 +1,5 @@
 <div class="well well-sm">
-  <h3><?=$post->title?></h3>
+  <h1><?=$post->title?></h1>
   <div>
     <?=$post->content?>
   </div>

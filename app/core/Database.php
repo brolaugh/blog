@@ -120,6 +120,15 @@ class Database extends DatabaseConfig
         while($retval[] = $res->fetch_object());
         return $retval;
     }
+    public function getAllBlogs(){
+        $stmt = $this->database_connection->prepare("SELECT id FROM blog");
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->close();
+        $retval = [];
+        while($retval[] = $res->fetch_object()->id);
+        return $retval;
+    }
 }
 function makeValuesReferenced($arr){
     $refs = array();

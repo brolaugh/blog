@@ -1,6 +1,6 @@
 <?php
 
-class Blog extends Controller
+class blog extends Controller
 {
     private $blog;
 
@@ -15,7 +15,6 @@ class Blog extends Controller
             $blogModel = $this->model("Blog");
             $blogModel->prepare($this->blog);
 
-            echo "<pre>";
             $authorModel = $this->model("Author");
             $authorModel->prepare($blogModel->author);
 
@@ -36,10 +35,17 @@ class Blog extends Controller
         echo 'post/' . $post;
     }
     public function compose($post = "new"){
-        if($post == "new"){
-            //Show empty post form
-        }else{
+        $blogModel = $this->model("Blog");
+        $blogModel->prepare($this->blog);
+
+        $authorModel = $this->model("Author");
+        $authorModel->prepare($blogModel->author);
+
+        $postModel = $this->model("Post");
+        if($post != "new"){
             //get $post from database and fill forms
+            $postModel->prepare($post);
         }
+        $this->view("blog/compose", ["blog" => $blogModel, "post" => $postModel, "author" => $authorModel]);
     }
 }
