@@ -26,4 +26,14 @@ class Blog extends \Database
         $this->author = $data->author;
         $this->description = $data->description;
     }
+    private function getBlogByID($blogID){
+        $stmt = $this->database_connection->prepare("SELECT * FROM blog WHERE id = ?");
+        $stmt->bind_param("i", $blogID);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        return $res->fetch_object();
+    }
+
 }

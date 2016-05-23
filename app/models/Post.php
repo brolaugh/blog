@@ -40,5 +40,35 @@ class Post extends \Database
         $this->tags = explode(",", $_POST['compose-tags']);
         $this->sendPost($this);
     }
+    private function getPostByID($postID){
+        $stmt = $this->database_connection->prepare("SELECT * FROM post WHERE id = ?");
+        $stmt->bind_param("i", $postID);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        return $res->fetch_object();
+    }
 
+    private function sendPost($blog){
+        $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, content, status, create_time, publishing_time) values(?,?,?,?, NOW(), NOW())");
+        $stmt->bind_param('issi', $blog->blog, $blog->title, $blog->content, $blog->status);
+        $retval = $stmt->execute();
+        $stmt->free_result();
+        $stmt->close();
+        return $retval;
+    }
+    private function getTagsFromPostID($postID){
+        $stmt = $this->database_connection->prepare("SELECT tag.name FROM post_tag LEFT JOIN tag ON post_tag.tag=tag.id WHERE post_tag.post = ?");
+        $stmt->bind_param("i", $postID);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        $retval = [];
+        while($row = $res->fetch_object()){
+            $retval[] = $row->name;
+        }
+        return $retval;
+    }
 }
