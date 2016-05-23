@@ -1,4 +1,4 @@
-<div class="well well-sm">
+<div class="well well-sm" id="<?=$post->url_title?>">
   <h1><?=$post->title?></h1>
   <div>
     <?=$post->content?>
