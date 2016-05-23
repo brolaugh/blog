@@ -9,7 +9,6 @@
 class home extends Controller
 {
     public function index($name = ''){
-        echo 'home/index';
         $user = $this->model('User');
         $user->name = $name;
         $db = new Database();
@@ -19,6 +18,6 @@ class home extends Controller
             $newBlog->prepare($blog);
             $blogs[] = $newBlog;
         }
-        $this->view('home/show_all_blogs', ['blogs' => $blogs]);
+        $this->view('home/index', ['blogs' => $blogs]);
     }
 }

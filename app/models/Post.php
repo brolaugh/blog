@@ -32,5 +32,13 @@ class Post extends \Database
         $md = new \Parsedown();
         $this->content= $md->parse($this->content);
     }
+    public function send($blog){
+        $this->blog = $blog;
+        $this->title = $_POST['compose-title'];
+        $this->content = $_POST['compose-body'];
+        $this->status = 4;
+        $this->tags = explode(",", $_POST['compose-tags']);
+        $this->sendPost($this);
+    }
 
 }

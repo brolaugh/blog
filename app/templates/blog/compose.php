@@ -1,5 +1,5 @@
 <div class="well well-sm">
-  <form class="" action="" method="post">
+  <form class="form-horizonal" action="/<?=$blog->name?>/compose/send" method="post">
     <fieldset>
       <legend>Compose</legend>
       <div class="form-group">

@@ -22,9 +22,11 @@ class Database extends DatabaseConfig
 
         $res = $stmt->get_result();
         if($res->num_rows > 0){
+            $stmt->free_result();
             $stmt->close();
             return $res->fetch_object()->id;
         }else{
+            $stmt->free_result();
             $stmt->close();
             return false;
         }
@@ -34,6 +36,7 @@ class Database extends DatabaseConfig
         $stmt->bind_param("i", $blogID);
         $stmt->execute();
         $res = $stmt->get_result();
+        $stmt->free_result();
         $stmt->close();
         return $res->fetch_object();
     }
@@ -42,6 +45,7 @@ class Database extends DatabaseConfig
         $stmt->bind_param("i", $postID);
         $stmt->execute();
         $res = $stmt->get_result();
+        $stmt->free_result();
         $stmt->close();
         return $res->fetch_object();
     }
@@ -50,6 +54,7 @@ class Database extends DatabaseConfig
         $stmt->bind_param("i", $postID);
         $stmt->execute();
         $res = $stmt->get_result();
+        $stmt->free_result();
         $stmt->close();
         $retval = [];
         while($row = $res->fetch_object()){
@@ -95,12 +100,13 @@ class Database extends DatabaseConfig
         $paramValues = array_merge($paramValues, [$options['limit'], $options['offset']]);
         $paramValues = array_values($paramValues);
         
-        $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE blog = ? AND status IN(". $questionMarks .") ORDER BY ? ASC LIMIT ? OFFSET ? ");
+        $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE blog = ? AND status IN(". $questionMarks .") ORDER BY (UNIX_TIMESTAMP(?)) DESC LIMIT ? OFFSET ?");
         call_user_func_array([$stmt, "bind_param"], makeValuesReferenced($paramValues));
         //$options['sort_order']
+        $stmt->free_result();
         $stmt->execute();
         $res = $stmt->get_result();
-
+            $stmt->free_result();
             $stmt->close();
             $retval = [];
             while($row = $res->fetch_object()){
@@ -115,20 +121,33 @@ class Database extends DatabaseConfig
         $stmt->bind_param("i", $authorID);
         $stmt->execute();
         $res = $stmt->get_result();
+        $stmt->free_result();
         $stmt->close();
         $retval = [];
         while($retval[] = $res->fetch_object());
+        return $retval;
+    }
+    protected function sendPost($blog){
+        $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, content, status, create_time, publishing_time) values(?,?,?,?, NOW(), NOW())");
+        $stmt->bind_param('issi', $blog->blog, $blog->title, $blog->content, $blog->status);
+        $retval = $stmt->execute();
+        $stmt->free_result();
+        $stmt->close();
         return $retval;
     }
     public function getAllBlogs(){
         $stmt = $this->database_connection->prepare("SELECT id FROM blog");
         $stmt->execute();
         $res = $stmt->get_result();
+        $stmt->free_result();
         $stmt->close();
         $retval = [];
-        while($retval[] = $res->fetch_object()->id);
+        while($row = $res->fetch_object()){
+            $retval[] = $row->id;
+        }
         return $retval;
     }
+
 }
 function makeValuesReferenced($arr){
     $refs = array();

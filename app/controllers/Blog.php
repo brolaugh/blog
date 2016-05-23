@@ -42,9 +42,19 @@ class blog extends Controller
         $authorModel->prepare($blogModel->author);
 
         $postModel = $this->model("Post");
-        if($post != "new"){
-            //get $post from database and fill forms
-            $postModel->prepare($post);
+        switch($post){
+            case "send":
+                $postModel->send($this->blog);
+                break;
+
+            case "new":
+                break;
+
+            default:
+                //get $post from database and fill forms
+                $postModel->prepare($post);
+                break;
+
         }
         $this->view("blog/compose", ["blog" => $blogModel, "post" => $postModel, "author" => $authorModel]);
     }
