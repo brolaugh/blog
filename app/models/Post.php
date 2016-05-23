@@ -1,17 +1,12 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: hannes.kindstrommer
- * Date: 2016-05-17
- * Time: 14:41
- */
 namespace models;
 class Post extends \Database
 {
     public $id;
     public $blog;
     public $title;
+    public $url_title;
     public $content;
     public $status;
     public $create_time;
@@ -23,6 +18,7 @@ class Post extends \Database
         $this->id = $post;
         $this->blog = $data->blog;
         $this->title = $data->title;
+        $this->url_title = $data->url_title;
         $this->content = $data->content;
         $this->status = $data->status;
         $this->create_time = $data->create_time;
