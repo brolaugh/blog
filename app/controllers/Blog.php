@@ -48,14 +48,18 @@ class blog extends Controller
                 break;
 
             case "new":
+                //$unPublishedPostModels = [];
+                //$unPublishedPostModels = new Database()->getPostsByBlog($this->blog, []);
+                //$postModel->loadStatusOptions();
                 break;
 
             default:
                 //get $post from database and fill forms
+                $postModel->loadStatusOptions();
                 $postModel->prepare($post);
                 break;
 
         }
-        $this->view("blog/compose", ["blog" => $blogModel, "post" => $postModel, "author" => $authorModel]);
+        $this->view("blog/compose", ["blog" => $blogModel, "post" => $postModel, "author" => $authorModel, "unpublishedPosts" => $unPublishedPostModels]);
     }
 }

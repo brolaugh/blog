@@ -20,6 +20,18 @@
           <input type="text" id="compose-tags" name="compose-tags" placeholder="Write your tags seperated by comma(,)" value="<?=(isset($post->tags)) ? $post->printTags : ""?>" class="form-control"/>
         </div>
       </div>
+      <div class="form-group">
+        <label for="compose-visibility" class="control-label col-md-2 text-primary">Visibility options</label>
+        <div class="col-md-10">
+          <select id="compose-visibility" name="compose-visibility" class="form-control">
+            <?php
+            foreach($post->statusOptions as $option){
+              echo "<option value='$option'>" . ucfirst($option) . "</option>";
+            }
+            ?>
+          </select>
+        </div>
+      </div>
         <div class="form-group">
             <div class="col-md-2">
                 <input type="submit"  class="btn btn-primary btn-raised" value="Submit"/>

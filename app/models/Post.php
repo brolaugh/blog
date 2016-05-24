@@ -13,6 +13,8 @@ class Post extends \Database
     public $publishing_time;
     public $tags;
 
+    public $statusOptions;
+
     public function prepare($post){
         $data = $this->getPostByID($post);
         $this->id = $post;
@@ -36,6 +38,21 @@ class Post extends \Database
         $this->tags = explode(",", $_POST['compose-tags']);
         $this->sendPost($this);
     }
+    public function loadStatusOptions(){
+        $stmt = $this->database_connection->prepare("SHOW COLUMNS FROM `post` LIKE 'status'");
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+
+        preg_match('/enum\((.*)\)$/', $res->fetch_object()->Type, $matches);
+        $retval = explode(',', $matches[1]);
+        for($i = 0; $i < count($retval); $i++){
+            $retval[$i] = trim($retval[$i], "'");
+        }
+        $this->statusOptions = $retval;
+    }
+    
     private function getPostByID($postID){
         $stmt = $this->database_connection->prepare("SELECT * FROM post WHERE id = ?");
         $stmt->bind_param("i", $postID);
