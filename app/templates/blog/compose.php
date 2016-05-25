@@ -26,7 +26,7 @@
           <select id="compose-visibility" name="compose-visibility" class="form-control">
             <?php
             foreach($post->statusOptions as $option){
-              echo "\t\t<option value='$option'>" . ucfirst($option) . "</option>\n";
+              echo "\t\t<option value='$option->id'>" . ucfirst($option->name) . "</option>\n";
             }
             ?>
           </select>

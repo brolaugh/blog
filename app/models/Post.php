@@ -39,16 +39,14 @@ class Post extends \Database
         $this->sendPost($this);
     }
     public function loadStatusOptions(){
-        $stmt = $this->database_connection->prepare("SHOW COLUMNS FROM `post` LIKE 'status'");
+        $stmt = $this->database_connection->prepare("SELECT * FROM post_status");
         $stmt->execute();
         $res = $stmt->get_result();
         $stmt->free_result();
         $stmt->close();
-
-        preg_match('/enum\((.*)\)$/', $res->fetch_object()->Type, $matches);
-        $retval = explode(',', $matches[1]);
-        for($i = 0; $i < count($retval); $i++){
-            $retval[$i] = trim($retval[$i], "'");
+        $retval = [];
+        while ($row = $res->fetch_object()){
+            $retval[] = $row;
         }
         $this->statusOptions = $retval;
     }
