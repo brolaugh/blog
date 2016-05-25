@@ -7,7 +7,7 @@
   <div class="">
       <?php
         foreach($post->tags as $t) {
-          echo "<a href=\"/brolaugh/tag/$t\"><span class=\"label label-muted\">$t</span></a>";
+          echo "<a href=\"/$blog->name/tag/$t\"><span class=\"label label-muted\">$t</span></a>";
         }
       ?>
   </div>
