@@ -42,19 +42,25 @@ class blog extends Controller
         $authorModel->prepare($blogModel->author);
 
         $postModel = $this->model("Post");
+        $unPublishedPostModels = [];
+        $options = [
+            "limit" => "int.MaxValue",
+            "offset" => 0,
+            "status" => [1]
+        ];
         switch($post){
             case "send":
                 $postModel->send($this->blog);
                 break;
 
             case "new":
-                //$unPublishedPostModels = [];
-                //$unPublishedPostModels = new Database()->getPostsByBlog($this->blog, []);
+                $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
                 break;
 
             default:
                 //get $post from database and fill forms
+                $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
                 $postModel->prepare($post);
                 break;
