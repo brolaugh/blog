@@ -50,7 +50,7 @@ class blog extends Controller
             case "new":
                 //$unPublishedPostModels = [];
                 //$unPublishedPostModels = new Database()->getPostsByBlog($this->blog, []);
-                //$postModel->loadStatusOptions();
+                $postModel->loadStatusOptions();
                 break;
 
             default:
