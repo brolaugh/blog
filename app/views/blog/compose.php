@@ -7,6 +7,7 @@
  */
 $blog = $data["blog"];
 $author = $data["author"];
+$post = $data['post'];
 ?>
 
 <?php include('../app/templates/blog/head.php')?>
@@ -14,7 +15,8 @@ $author = $data["author"];
 <?php include('../app/templates/blog/header.php')?>
 <div class="container-fluid">
     <div class="row">
-        <?php include('../app/templates/blog/sidemenu.php')?>
+        <!--Switch out for list of non published and draft posts-->
+        <?php include('../app/templates/blog/compose/sidemenu.php')?>
         <main class="col-md-8">
             <?php include('../app/templates/blog/compose.php')?>
         </main>
@@ -25,10 +27,5 @@ $author = $data["author"];
 
 
 </div>
-<footer class="container-fluid">
-    <script src="js/jquery.min.js" charset="utf-8"></script>
-    <script src="js/bootstrap.min.js" charset="utf-8"></script>
-    <script src="js/material.min.js" charset="utf-8"></script>
-    <script src="js/ripples.min.js" charset="utf-8"></script>
-</footer>
+    <?php include('../app/templates/footer.php') ?>
 </body>
