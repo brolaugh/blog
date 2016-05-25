@@ -37,15 +37,32 @@ class Database extends DatabaseConfig
      * @return array
      */
     public function getPostsByBlog(
-    $blog,
-    $options = [
-        "limit" => 5,
-        "offset" => 0,
-        "sort_order" => "DESC",
-        "sort_column" => "create_time",
-        "status" => [4,3,2,1]
-    ]
-){
+        $blog,
+        $options = [
+            "limit" => 5,
+            "offset" => 0,
+            "sort_order" => "DESC",
+            "sort_column" => "create_time",
+            "status" => [4]
+        ]
+    ){
+        if(!isset($options['limit'])){
+            $options['limit'] = 5;
+        }
+        if(!isset($options['offset'])){
+            $options['offset'] = 0;
+        }
+        if(!isset($options['sort_order'])){
+            $options['sort_order'] = "DESC";
+        }
+        if(!isset($options['sort_column'])){
+            $options['sort_column'] = "create_time";
+        }
+        if(!isset($options['status'])){
+            $options['status'] = [4];
+        }
+
+
     $questionMarks = "";
     $param = "i";
     $paramValues = array($blog, $options['sort_column']);
@@ -84,7 +101,7 @@ class Database extends DatabaseConfig
 
 
 }
-
+    
     public function getAllBlogs(){
         $stmt = $this->database_connection->prepare("SELECT id FROM blog");
         $stmt->execute();
