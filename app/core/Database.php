@@ -65,7 +65,7 @@ class Database extends DatabaseConfig
 
     $questionMarks = "";
     $param = "i";
-    $paramValues = array($blog, $options['sort_column']);
+    $paramValues = [$blog];
     foreach($options['status'] as $status){
         if(strlen($questionMarks) == 0){
             $param.= 'i';
@@ -80,15 +80,14 @@ class Database extends DatabaseConfig
         }
     }
     $param.="sii";
-    //Param should be "i" + "i" count($options['status])+ "sii"
+    //Param should be "i" + "i" x count($options['status])+ "sii"
     array_unshift($paramValues, $param);
-    $paramValues = array_merge($paramValues, [$options['limit'], $options['offset']]);
+    $paramValues = array_merge($paramValues, [$options['sort_column'], $options['limit'], $options['offset']]);
     $paramValues = array_values($paramValues);
 
     $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE blog = ? AND status IN(". $questionMarks .") ORDER BY (UNIX_TIMESTAMP(?)) DESC LIMIT ? OFFSET ?");
     call_user_func_array([$stmt, "bind_param"], makeValuesReferenced($paramValues));
     //$options['sort_order']
-    $stmt->free_result();
     $stmt->execute();
     $res = $stmt->get_result();
     $stmt->free_result();
