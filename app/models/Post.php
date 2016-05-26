@@ -15,9 +15,10 @@ class Post extends \Database
 
     public $statusOptions;
 
-    public function prepare($post){
-        $data = $this->getPostByID($post);
-        $this->id = $post;
+    //Fetches data from the database based on the postID argument
+    public function prepare($postID){
+        $data = $this->getPostByID($postID);
+        $this->id = $postID;
         $this->blog = $data->blog;
         $this->title = $data->title;
         $this->url_title = $data->url_title;
@@ -30,6 +31,7 @@ class Post extends \Database
         $md = new \Parsedown();
         $this->content= $md->parse($this->content);
     }
+    //Collects data from the compose form and then sends it to the database
     public function send($blog){
         $this->blog = $blog;
         $this->title = $_POST['compose-title'];
@@ -61,6 +63,7 @@ class Post extends \Database
         return $res->fetch_object();
     }
 
+    //Sends the data to the database as a new row
     private function sendPost($blog){
         $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, content, status, create_time, publishing_time) values(?,?,?,?, NOW(), NOW())");
         $stmt->bind_param('issi', $blog->blog, $blog->title, $blog->content, $blog->status);
