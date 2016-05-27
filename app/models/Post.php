@@ -46,7 +46,12 @@ class Post extends \Database
         foreach($this->tags as $key => $value){
             $this->tags[$key] = trim(",", $value);
         }
-        $this->sendPost($this);
+        if($this->doesURLTitleExistInBlog($this->url_title, $this->blog)){
+            //Send client back to /blog/compose
+            exit("That URL title already exists on this blog");
+        }else{
+            $this->sendPost($this);
+        }
     }
     public function loadStatusOptions(){
         $stmt = $this->database_connection->prepare("SELECT * FROM post_status");
@@ -89,6 +94,15 @@ class Post extends \Database
         $stmt->free_result();
         $stmt->close();
         return $retval;
+    }
+    private function doesURLTitleExistInBlog($urlTitle, $blog){
+        $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE url_title = ? AND blog = ?");
+        $stmt->prepare("si", $urlTitle, $blog);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        return ($retval = $res->fetch_object()->id) ? $retval : false;
     }
     private function getTagsFromPostID($postID){
         $stmt = $this->database_connection->prepare("SELECT tag.name FROM post_tag LEFT JOIN tag ON post_tag.tag=tag.id WHERE post_tag.post = ?");
