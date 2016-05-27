@@ -5,6 +5,7 @@ class blog extends Controller
     private $blog;
     private $blogModel;
     private $authorModel;
+    private $sideMenuItems = [];
 
     public function __construct($blog)
     {
@@ -37,14 +38,24 @@ class blog extends Controller
     /**
      * @param $post name
      */
-    public function post($post)
+    public function post($post = "")
     {
-        $postModel = $this->model("Post");
-        $postModel->prepare($post, $this->blog);
+        if (strlen($post) == 0) {
+            header("Location: /".$this->blogModel->name."/");
+        } else {
 
+            $postModel = $this->model("Post");
+            if (!$postModel->prepare($post, $this->blog)) {
+                $this->Error404();
+                exit();
+            }
 
-        $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel]);
-
+            /* Code below breaks $postModel
+            foreach($this->model("Post")->getSideMenuItems($this->blog) as $sideMenuItem){
+                $this->sideMenuItems[] = $sideMenuItem;
+            }*/
+            $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "sideMenuItems" => $this->sideMenuItems]);
+        }
     }
 
     public function compose($post = "new")

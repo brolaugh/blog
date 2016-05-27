@@ -41,7 +41,7 @@ class Database extends DatabaseConfig
     public function getPostsByBlog(
         $blog,
         $options = [
-            "limit" => 10,
+            "limit" => 5,
             "offset" => 0,
             //Var below is disabled
             "sort_order" => "DESC",
@@ -52,7 +52,7 @@ class Database extends DatabaseConfig
     )
     {
         if (!isset($options['limit'])) {
-            $options['limit'] = 10;
+            $options['limit'] = 5;
         }
         if (!isset($options['offset'])) {
             $options['offset'] = 0;
@@ -89,7 +89,7 @@ class Database extends DatabaseConfig
         array_unshift($paramValues, $param);
         $paramValues = array_merge($paramValues, [$options['limit'], $options['offset']]);
         $paramValues = array_values($paramValues);
-        $query = "SELECT id, title, publishing_time FROM post WHERE blog = ? AND status IN(" . $questionMarks . ") ORDER BY publishing_time DESC LIMIT ? OFFSET ?";
+        $query = "SELECT id FROM post WHERE blog = ? AND status IN(" . $questionMarks . ") ORDER BY publishing_time DESC LIMIT ? OFFSET ?";
         $stmt = $this->database_connection->prepare($query);
         call_user_func_array([$stmt, "bind_param"], makeValuesReferenced($paramValues));
         $stmt->execute();

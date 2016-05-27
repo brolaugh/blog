@@ -3,7 +3,7 @@
         <h4 class="text-primary">Post index</h4>
         <ul class="list">
             <?php
-            foreach ($posts as $post) {
+            foreach ($sideMenuItems as $post) {
                 echo "<li><a href='#$post->url_title'>$post->title</a></li>";
             }
             ?>
