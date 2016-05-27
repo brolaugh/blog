@@ -36,8 +36,9 @@ class Post extends \Database
         $this->blog = $blog;
         $this->title = $_POST['compose-title'];
         $this->content = $_POST['compose-body'];
-        $this->status = 4;
-        $this->tags = explode(",", $_POST['compose-tags']);
+        $this->status = $_POST['compose-visibility'];
+        $this->url_title = $_POST['compose-url-title'];
+        $this->tags = explode(",", trim(",", $_POST['compose-tags']));
         $this->sendPost($this);
     }
     public function loadStatusOptions(){
@@ -65,8 +66,8 @@ class Post extends \Database
 
     //Sends the data to the database as a new row
     private function sendPost($blog){
-        $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, content, status, create_time, publishing_time) values(?,?,?,?, NOW(), NOW())");
-        $stmt->bind_param('issi', $blog->blog, $blog->title, $blog->content, $blog->status);
+        $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) values(?,?,?,?,?, NOW(), NOW())");
+        $stmt->bind_param('isssi', $blog->blog, $blog->title, $blog->url_title, $blog->content, $blog->status);
         $retval = $stmt->execute();
         $stmt->free_result();
         $stmt->close();
