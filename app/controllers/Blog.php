@@ -18,9 +18,7 @@ class blog extends Controller
             $authorModel = $this->model("Author");
             $authorModel->prepare($blogModel->author);
 
-            $db = new Database();
-
-            $posts = $db->getPostsByBlog($this->blog);
+            $posts = (new Database())->getPostsByBlog($this->blog);
             $postModels = [];
             foreach($posts as $postID){
                 $post = $this->model("Post");

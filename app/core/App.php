@@ -41,7 +41,6 @@ class App{
 
     }
     private function blog_exists($blog){
-        $database = new Database();
-        return $database->blog_exists($blog);
+        return (new Database())->blog_exists($blog);
     }
 }
