@@ -16,29 +16,36 @@ class Post extends \Database
     public $statusOptions;
 
     //Fetches data from the database based on the postID argument
-    public function prepare($postID){
-        $data = $this->getPostByID($postID);
-        $this->id = $postID;
-        $this->blog = $data->blog;
-        $this->title = $data->title;
-        $this->url_title = $data->url_title;
-        $this->content = $data->content;
-        $this->status = $data->status;
-        $this->create_time = $data->create_time;
-        $this->publishing_time = $data->publishing_time;
-        $this->tags = $this->getTagsFromPostID($this->id);
+    public function prepare($post, $blogID){
+        $this->id = $post;
+        if(is_numeric($post)){
+            $this->insertData($this->getPostByID($post));
+        }
+        else if(is_string($post)){
+            $this->insertData($this->getPostByURLTitle($post, $blogID));
+        }
+    }
 
-        $md = new \Parsedown();
-        $this->content= $md->parse($this->content);
+    public function getPostByURLTitle($urlTitle, $blog){
+        $stmt = $this->database_connection->prepare("SELECT * FROM post WHERE url_title = ? AND blog = ?");
+        $stmt->bind_param("si", $urlTitle, $blog);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        return $res->fetch_object();
     }
     //Collects data from the compose form and then sends it to the database
     public function send($blog){
         $this->blog = $blog;
         $this->title = $_POST['compose-title'];
+        $this->url_title = str_replace(" ", "_", $_POST['compose-url-title']);
         $this->content = $_POST['compose-body'];
         $this->status = $_POST['compose-visibility'];
-        $this->url_title = $_POST['compose-url-title'];
         $this->tags = explode(",", trim(",", $_POST['compose-tags']));
+        foreach($this->tags as $key => $value){
+            $this->tags[$key] = trim(",", $value);
+        }
         $this->sendPost($this);
     }
     public function loadStatusOptions(){
@@ -63,7 +70,17 @@ class Post extends \Database
         $stmt->close();
         return $res->fetch_object();
     }
-
+    private function insertData($data){
+        $this->blog = $data->blog;
+        $this->title = $data->title;
+        $this->url_title = $data->url_title;
+        $this->content = $data->content;
+        $this->status = $data->status;
+        $this->create_time = $data->create_time;
+        $this->publishing_time = $data->publishing_time;
+        $this->tags = $this->getTagsFromPostID($this->id);
+        $this->content= (new \Parsedown())->parse($this->content);
+    }
     //Sends the data to the database as a new row
     private function sendPost($blog){
         $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) values(?,?,?,?,?, NOW(), NOW())");

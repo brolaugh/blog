@@ -22,15 +22,30 @@ class blog extends Controller
             $postModels = [];
             foreach($posts as $postID){
                 $post = $this->model("Post");
-                $post->prepare($postID);
+                $post->prepare($postID, $this->blog);
                 $postModels[] = $post;
             }
             $this->view("blog/index", ["blog" => $blogModel, "posts" => $postModels, "author" => $authorModel]);
         }
             
     }
+
+    /**
+     * @param $post name
+     */
     public function post($post){
-        echo 'post/' . $post;
+        $blogModel = $this->model("Blog");
+        $blogModel->prepare($this->blog);
+        
+        $authorModel = $this->model("Author");
+        $authorModel->prepare($blogModel->author);
+        
+        $postModel = $this->model("Post");
+        $postModel->prepare($post, $this->blog);
+
+
+        $this->view("blog/post", ["blog" => $blogModel, "post" => $postModel, "author" => $authorModel]);
+
     }
     public function compose($post = "new"){
         $blogModel = $this->model("Blog");
@@ -49,6 +64,7 @@ class blog extends Controller
         switch($post){
             case "send":
                 $postModel->send($this->blog);
+                header("Location:/$blogModel->name/post/$postModel->url_title");
                 break;
 
             case "new":
@@ -60,7 +76,7 @@ class blog extends Controller
                 //get $post from database and fill forms
                 $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
-                $postModel->prepare($post);
+                $postModel->prepare($post, $this->blog);
                 break;
 
         }
