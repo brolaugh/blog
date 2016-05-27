@@ -20,13 +20,16 @@ class blog extends Controller
 
     public function index($data = [])
     {
-        echo "<pre>";
-        var_dump($data);
-        echo "</pre>";
-        if (count($data) > 0)
+        if (count($data) == 1){
             $this->post($data[0]);
+        }
+
         else {
-            $posts = (new Database())->getPostsByBlog($this->blog);
+            $options = [];
+            if($data[0] == "page" && is_numeric($data[1])){
+                $options["offset"] = $data[1];
+            }
+            $posts = (new Database())->getPostsByBlog($this->blog, $options);
             $postModels = [];
             foreach ($posts as $postID) {
                 $post = $this->model("Post");
