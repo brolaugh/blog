@@ -15,22 +15,24 @@ class Database extends DatabaseConfig
      * @return false if blog doesn't exist
      * @return blogId if blog exists
      */
-    public function blog_exists($blog){
+    public function blog_exists($blog)
+    {
         $stmt = $this->database_connection->prepare("SELECT id FROM blog WHERE name = ?");
         $stmt->bind_param('s', $blog);
         $stmt->execute();
 
         $res = $stmt->get_result();
-        if($res->num_rows > 0){
+        if ($res->num_rows > 0) {
             $stmt->free_result();
             $stmt->close();
             return $res->fetch_object()->id;
-        }else{
+        } else {
             $stmt->free_result();
             $stmt->close();
             return false;
         }
     }
+
     /**
      * @param $blog
      * @param array $options
@@ -39,85 +41,90 @@ class Database extends DatabaseConfig
     public function getPostsByBlog(
         $blog,
         $options = [
-            "limit" => 5,
+            "limit" => 10,
             "offset" => 0,
+            //Var below is disabled
             "sort_order" => "DESC",
-            "sort_column" => "create_time",
+            //Var below is disabled
+            "sort_column" => "publishing_time",
             "status" => [4]
         ]
-    ){
-        if(!isset($options['limit'])){
-            $options['limit'] = 5;
+    )
+    {
+        if (!isset($options['limit'])) {
+            $options['limit'] = 10;
         }
-        if(!isset($options['offset'])){
+        if (!isset($options['offset'])) {
             $options['offset'] = 0;
         }
-        if(!isset($options['sort_order'])){
+        if (!isset($options['sort_order'])) {
+            //Disabled
             $options['sort_order'] = "DESC";
         }
-        if(!isset($options['sort_column'])){
-            $options['sort_column'] = "create_time";
+        if (!isset($options['sort_column'])) {
+            //Disabled
+            $options['sort_column'] = "publishing_time";
         }
-        if(!isset($options['status'])){
+        if (!isset($options['status'])) {
             $options['status'] = [4];
         }
 
 
-    $questionMarks = "";
-    $param = "i";
-    $paramValues = [$blog];
-    foreach($options['status'] as $status){
-        if(strlen($questionMarks) == 0){
-            $param.= 'i';
-            $paramValues[] = $status;
-            $questionMarks.= "?";
+        $questionMarks = "";
+        $param = "i";
+        $paramValues = [$blog];
+        foreach ($options['status'] as $status) {
+            if (strlen($questionMarks) == 0) {
+                $param .= 'i';
+                $paramValues[] = $status;
+                $questionMarks .= "?";
+            } else {
+                $param .= 'i';
+                $paramValues[] = $status;
+                $questionMarks .= ",?";
+            }
         }
-
-        else{
-            $param.= 'i';
-            $paramValues[] = $status;
-            $questionMarks.= ",?";
+        $param .= "ii";
+        //Param should be "i" + "i" x count($options['status])+ "sii"
+        array_unshift($paramValues, $param);
+        $paramValues = array_merge($paramValues, [$options['limit'], $options['offset']]);
+        $paramValues = array_values($paramValues);
+        $query = "SELECT id, title, publishing_time FROM post WHERE blog = ? AND status IN(" . $questionMarks . ") ORDER BY publishing_time DESC LIMIT ? OFFSET ?";
+        $stmt = $this->database_connection->prepare($query);
+        call_user_func_array([$stmt, "bind_param"], makeValuesReferenced($paramValues));
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        $retval = [];
+        while ($row = $res->fetch_object()) {
+            $retval[] = $row->id;
         }
+        return $retval;
+
+
     }
-    $param.="sii";
-    //Param should be "i" + "i" x count($options['status])+ "sii"
-    array_unshift($paramValues, $param);
-    $paramValues = array_merge($paramValues, [$options['sort_column'], $options['limit'], $options['offset']]);
-    $paramValues = array_values($paramValues);
 
-    $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE blog = ? AND status IN(". $questionMarks .") ORDER BY (UNIX_TIMESTAMP(?)) DESC LIMIT ? OFFSET ?");
-    call_user_func_array([$stmt, "bind_param"], makeValuesReferenced($paramValues));
-    //$options['sort_order']
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $stmt->free_result();
-    $stmt->close();
-    $retval = [];
-    while($row = $res->fetch_object()){
-        $retval[] = $row->id;
-    }
-    return $retval;
-
-
-}
-    
-    public function getAllBlogs(){
+    public function getAllBlogs()
+    {
         $stmt = $this->database_connection->prepare("SELECT id FROM blog");
         $stmt->execute();
         $res = $stmt->get_result();
         $stmt->free_result();
         $stmt->close();
         $retval = [];
-        while($row = $res->fetch_object()){
+        while ($row = $res->fetch_object()) {
             $retval[] = $row->id;
         }
         return $retval;
     }
 
 }
-function makeValuesReferenced($arr){
+
+function makeValuesReferenced($arr)
+{
     $refs = array();
-    foreach($arr as $key => $value)
+    foreach ($arr as $key => $value)
         $refs[$key] = &$arr[$key];
     return $refs;
 
