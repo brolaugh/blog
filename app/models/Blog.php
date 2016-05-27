@@ -16,7 +16,7 @@ class Blog extends \Database
     public $author;
     public $description;
     public $stylesheet;
-
+    public $numPosts;
 
     public function prepare($blog)
     {
@@ -26,6 +26,7 @@ class Blog extends \Database
         $this->name = $data->name;
         $this->author = $data->author;
         $this->description = $data->description;
+        $this->numPosts = $this->getNumPosts();
     }
 
     private function getBlogByID($blogID)
@@ -37,6 +38,15 @@ class Blog extends \Database
         $stmt->free_result();
         $stmt->close();
         return $res->fetch_object();
+    }
+    private function getNumPosts(){
+        $stmt = $this->database_connection->prepare("SELECT count(id) as numPosts FROM post WHERE blog = ?");
+        $stmt->bind_param("i", $blogID);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        return $res->fetch_object()->numPosts;
     }
 
 }

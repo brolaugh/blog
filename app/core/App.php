@@ -32,8 +32,8 @@ class App
                 unset($url[1]);
             }
         }
-        $this->param = $url ? array_values($url) : [];
-        call_user_func_array([$this->controller, $this->method], $this->param);
+        $this->param = $url ? array_values($url) : null;
+        call_user_func([$this->controller, $this->method], $this->param);
 
     }
 

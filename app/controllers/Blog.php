@@ -18,10 +18,13 @@ class blog extends Controller
         $this->authorModel->prepare($this->blogModel->author);
     }
 
-    public function index($post = '')
+    public function index($data = [])
     {
-        if (strlen($post) > 0)
-            $this->post($post);
+        echo "<pre>";
+        var_dump($data);
+        echo "</pre>";
+        if (count($data) > 0)
+            $this->post($data[0]);
         else {
             $posts = (new Database())->getPostsByBlog($this->blog);
             $postModels = [];
@@ -38,14 +41,14 @@ class blog extends Controller
     /**
      * @param $post name
      */
-    public function post($post = "")
+    public function post($post = [])
     {
-        if (strlen($post) == 0) {
-            header("Location: /".$this->blogModel->name."/");
+        if (count($post) == 0) {
+            header("Location: /" . $this->blogModel->name . "/");
         } else {
 
             $postModel = $this->model("Post");
-            if (!$postModel->prepare($post, $this->blog)) {
+            if (!$postModel->prepare($post[0], $this->blog)) {
                 $this->Error404();
                 exit();
             }
@@ -58,7 +61,7 @@ class blog extends Controller
         }
     }
 
-    public function compose($post = "new")
+    public function compose($post = ["new"])
     {
         $postModel = $this->model("Post");
         $unPublishedPostModels = [];
@@ -67,10 +70,10 @@ class blog extends Controller
             "offset" => 0,
             "status" => [1]
         ];
-        switch ($post) {
+        switch ($post[0]) {
             case "send":
                 $postModel->send($this->blog);
-                header("Location:/$this->blogModel->name/post/$postModel->url_title");
+                header("Location:/".$this->blogModel->name ."/post/" . $postModel->url_title);
                 break;
 
             case "new":
