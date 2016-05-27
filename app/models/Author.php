@@ -13,13 +13,15 @@ class Author extends \Database
 {
     public $id;
     public $var;
-    
-    public function prepare($authorID){
+
+    public function prepare($authorID)
+    {
         $this->id = $authorID;
         $this->var = $this->getVariblesByAuthorID($this->id);
     }
 
-    private function getVariblesByAuthorID($authorID){
+    private function getVariblesByAuthorID($authorID)
+    {
         $stmt = $this->database_connection->prepare("SELECT * FROM author_variables WHERE author = ?");
         $stmt->bind_param("i", $authorID);
         $stmt->execute();
@@ -27,8 +29,8 @@ class Author extends \Database
         $stmt->free_result();
         $stmt->close();
         $retval = [];
-        while($row = $res->fetch_object()){
-            $retval[]= $row;
+        while ($row = $res->fetch_object()) {
+            $retval[] = $row;
         }
         return $retval;
     }

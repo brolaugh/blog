@@ -14,7 +14,7 @@
         <th>Link</th>
     </tr>
     <?php
-    foreach($data['blogs'] as $blog){
+    foreach ($data['blogs'] as $blog) {
         echo "<tr>";
         echo "<td>$blog->title</td>";
         echo "<td><a href=\"$blog->name\">Link</a></td>";

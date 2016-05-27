@@ -10,15 +10,15 @@ $posts = $data["posts"];
 $author = $data["author"];
 ?>
 
-  <?php include('../app/templates/blog/head.php')?>
+<?php include('../app/templates/blog/head.php') ?>
 <body>
-<?php include('../app/templates/blog/header.php')?>
+<?php include('../app/templates/blog/header.php') ?>
 <div class="container-fluid">
     <div class="row">
-        <?php include('../app/templates/blog/sidemenu.php')?>
+        <?php include('../app/templates/blog/sidemenu.php') ?>
         <main class="col-md-8">
             <?php
-            foreach($posts as $post){
+            foreach ($posts as $post) {
                 include '../app/templates/blog/post.php';
             }
             ?>
@@ -30,5 +30,5 @@ $author = $data["author"];
 
 
 </div>
-    <?php include('../app/templates/footer.php') ?>
+<?php include('../app/templates/footer.php') ?>
 </body>

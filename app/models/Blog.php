@@ -18,7 +18,8 @@ class Blog extends \Database
     public $stylesheet;
 
 
-    public function prepare($blog){
+    public function prepare($blog)
+    {
         $this->id = $blog;
         $data = $this->getBlogByID($blog);
         $this->title = $data->title;
@@ -26,7 +27,9 @@ class Blog extends \Database
         $this->author = $data->author;
         $this->description = $data->description;
     }
-    private function getBlogByID($blogID){
+
+    private function getBlogByID($blogID)
+    {
         $stmt = $this->database_connection->prepare("SELECT * FROM blog WHERE id = ?");
         $stmt->bind_param("i", $blogID);
         $stmt->execute();

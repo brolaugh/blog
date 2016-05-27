@@ -8,11 +8,12 @@
  */
 class home extends Controller
 {
-    public function index($name = ''){
+    public function index($name = '')
+    {
         $user = $this->model('User');
         $user->name = $name;
         $blogs = [];
-        foreach((new Database())->getAllBlogs() as $blog){
+        foreach ((new Database())->getAllBlogs() as $blog) {
             $newBlog = $this->model("blog");
             $newBlog->prepare($blog);
             $blogs[] = $newBlog;
