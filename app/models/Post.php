@@ -136,7 +136,8 @@ class Post extends \Database
         $res = $stmt->get_result();
         $stmt->free_result();
         $stmt->close();
-        return ($retval = $res->fetch_object()->id) ? $retval : false;
+
+        return ($res->num_rows > 0) ? $res->fetch_object()->id : false;
     }
 
     private function getTagsFromPostID($postID)
