@@ -22,6 +22,7 @@ $sideMenuItems = $data['posts'];
             foreach ($posts as $post) {
                 include '../app/templates/blog/post.php';
             }
+            require_once '../app/templates/pagination.php'
             ?>
         </main>
         <aside class="col-md-2">
