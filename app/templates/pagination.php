@@ -1,6 +1,5 @@
 <ul class="pagination">
 <?php
-var_dump($utility);
 
 if ($utility->currentPage > 1) {
     echo "\t<li><a href=\"/$blog->name/page/1\">««</a></li>";

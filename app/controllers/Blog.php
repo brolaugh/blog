@@ -27,8 +27,8 @@ class blog extends Controller
             $this->post($data[0]);
         } else {
             $options = [];
-            if ($data[0] == "page" && is_numeric($data[1])) {
-                $this->utilityModel->currentPage = $data[1];
+            if ($data[0] == "page" && is_numeric($data[1]) && $data[1] >  0) {
+                $this->utilityModel->currentPage = (int) $data[1];
             }
 
             $this->utilityModel->totalPages = (int) ceil($this->blogModel->numPosts / $this->utilityModel->pageLimit);
@@ -45,10 +45,9 @@ class blog extends Controller
                 $this->utilityModel->currentPage = 1;
             }
 
-            $options["offset"] = ($this->utilityModel->currentPage  -1 ) * $this->utilityModel->pageLimit;
+            $options["offset"] = ($this->utilityModel->currentPage  - 1 ) * $this->utilityModel->pageLimit;
             $options["limit"] = $this->utilityModel->pageLimit;
-
-
+            
             $posts = (new Database())->getPostsByBlog($this->blog, $options);
             $postModels = [];
             foreach ($posts as $postID) {
