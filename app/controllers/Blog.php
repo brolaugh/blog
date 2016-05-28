@@ -6,6 +6,7 @@ class blog extends Controller
     private $blogModel;
     private $authorModel;
     private $sideMenuItems = [];
+    private $utilityModel;
 
     public function __construct($blog)
     {
@@ -16,6 +17,8 @@ class blog extends Controller
 
         $this->authorModel = $this->model("Author");
         $this->authorModel->prepare($this->blogModel->author);
+
+        $this->utilityModel = $this->model("Utility");
     }
 
     public function index($data = [])
@@ -25,8 +28,27 @@ class blog extends Controller
         } else {
             $options = [];
             if ($data[0] == "page" && is_numeric($data[1])) {
-                $options["offset"] = $data[1];
+                $this->utilityModel->currentPage = $data[1];
             }
+
+            $this->utilityModel->totalPages = (int) ceil($this->blogModel->numPosts / $this->utilityModel->pageLimit);
+
+            // If current page is greater than the total numer of pages
+            if ($this->utilityModel->totalPages < $this->utilityModel->currentPage) {
+                // Set current page to the last
+                $this->utilityModel->currentPage = $this->utilityModel->totalPages;
+
+            }
+            //If the current page is lesser than 1
+            else if($this->utilityModel->currentPage < 1){
+                // Set current page to the first page
+                $this->utilityModel->currentPage = 1;
+            }
+
+            $options["offset"] = ($this->utilityModel->currentPage  -1 ) * $this->utilityModel->pageLimit;
+            $options["limit"] = $this->utilityModel->pageLimit;
+
+
             $posts = (new Database())->getPostsByBlog($this->blog, $options);
             $postModels = [];
             foreach ($posts as $postID) {
@@ -34,14 +56,11 @@ class blog extends Controller
                 $post->prepare($postID, $this->blog);
                 $postModels[] = $post;
             }
-            $this->view("blog/index", ["blog" => $this->blogModel, "posts" => $postModels, "author" => $this->authorModel]);
+            $this->view("blog/index", ["blog" => $this->blogModel, "posts" => $postModels, "author" => $this->authorModel, "utility" => $this->utilityModel]);
         }
 
     }
 
-    /**
-     * @param $post name
-     */
     public function post($post = [])
     {
         if (count($post) == 0) {
@@ -58,7 +77,7 @@ class blog extends Controller
             foreach($this->model("Post")->getSideMenuItems($this->blog) as $sideMenuItem){
                 $this->sideMenuItems[] = $sideMenuItem;
             }*/
-            $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "sideMenuItems" => $this->sideMenuItems]);
+            $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "sideMenuItems" => $this->sideMenuItems, "utility" => $this->utilityModel]);
         }
     }
 
@@ -90,6 +109,6 @@ class blog extends Controller
                 break;
 
         }
-        $this->view("blog/compose", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "unpublishedPosts" => $unPublishedPostModels]);
+        $this->view("blog/compose", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "unpublishedPosts" => $unPublishedPostModels, "utility" => $this->utilityModel]);
     }
 }

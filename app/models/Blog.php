@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Brolaugh
- * Date: 2016-05-20
- * Time: 20:17
- */
 namespace models;
 
 class Blog extends \Database
