@@ -10,7 +10,7 @@ if ($utility->currentPage > 1) {
 }
 
 //The number of pagination links besides the arrow ones
-$range = 3;
+$range = 5;
 
 for($x = ($utility->currentPage - $range);  $x < (($utility->currentPage + $range) + 1); $x++){
     // Checks wether the page number is valid
@@ -26,8 +26,8 @@ for($x = ($utility->currentPage - $range);  $x < (($utility->currentPage + $rang
 
 
 if ($utility->currentPage < $utility->totalPages) {
-    echo "\t<li><a href=\"/$blog->name/page/$utility->totalPages\">»»</a></li>\n";
     echo "\t<li><a href=\"/$blog->name/page/" . ($utility->currentPage + 1) . "\">»</a></li>\n";
+    echo "\t<li><a href=\"/$blog->name/page/$utility->totalPages\">»»</a></li>\n";
 } else {
     echo "\t<li class=\"disabled\"><a href=\"javascript:void(0)\">»</a></li>\n";
     echo "\t<li class=\"disabled\"><a href=\"javascript:void(0)\">»»</a></li>\n";
