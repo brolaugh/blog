@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Brolaugh
- * Date: 2016-05-20
- * Time: 20:17
- */
 namespace models;
 
 class Blog extends \Database
@@ -16,7 +10,7 @@ class Blog extends \Database
     public $author;
     public $description;
     public $stylesheet;
-
+    public $numPosts;
 
     public function prepare($blog)
     {
@@ -26,6 +20,7 @@ class Blog extends \Database
         $this->name = $data->name;
         $this->author = $data->author;
         $this->description = $data->description;
+        $this->numPosts = $this->getNumPosts();
     }
 
     private function getBlogByID($blogID)
@@ -37,6 +32,17 @@ class Blog extends \Database
         $stmt->free_result();
         $stmt->close();
         return $res->fetch_object();
+    }
+
+    private function getNumPosts()
+    {
+        $stmt = $this->database_connection->prepare("SELECT count(id) AS numPosts FROM post WHERE blog = ?");
+        $stmt->bind_param("i", $this->id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->free_result();
+        $stmt->close();
+        return $res->fetch_object()->numPosts;
     }
 
 }

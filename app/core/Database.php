@@ -69,7 +69,6 @@ class Database extends DatabaseConfig
             $options['status'] = [4];
         }
 
-
         $questionMarks = "";
         $param = "i";
         $paramValues = [$blog];

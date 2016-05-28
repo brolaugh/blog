@@ -38,7 +38,9 @@ class Post extends \Database
         $stmt->close();
         return $res->fetch_object();
     }
-    public function getSideMenuItems($blog){
+
+    public function getSideMenuItems($blog)
+    {
         $stmt = $this->database_connection->prepare("SELECT url_title, title FROM post WHERE blog = ? AND status = 4 ORDER BY publishing_time");
         $stmt->bind_param("i", $blog);
         $stmt->execute();
@@ -46,7 +48,7 @@ class Post extends \Database
         $stmt->free_result();
         $stmt->close();
         $retval = [];
-        while($row = $res->fetch_object()){
+        while ($row = $res->fetch_object()) {
             $row->kappa = "Keppo";
             $retval[] = $row;
         }
@@ -100,7 +102,7 @@ class Post extends \Database
 
     private function insertData($data)
     {
-        if(isset($data)){
+        if (isset($data)) {
             $this->blog = $data->blog;
             $this->title = $data->title;
             $this->url_title = $data->url_title;
@@ -111,7 +113,7 @@ class Post extends \Database
             $this->tags = $this->getTagsFromPostID($this->id);
             $this->content = (new \Parsedown())->parse($this->content);
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -120,7 +122,7 @@ class Post extends \Database
     //Sends the data to the database as a new row
     private function sendPost($blog)
     {
-        $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) values(?,?,?,?,?, NOW(), NOW())");
+        $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) VALUES(?,?,?,?,?, NOW(), NOW())");
         $stmt->bind_param('isssi', $blog->blog, $blog->title, $blog->url_title, $blog->content, $blog->status);
         $retval = $stmt->execute();
         $stmt->free_result();
@@ -136,7 +138,8 @@ class Post extends \Database
         $res = $stmt->get_result();
         $stmt->free_result();
         $stmt->close();
-        return ($retval = $res->fetch_object()->id) ? $retval : false;
+
+        return ($res->num_rows > 0) ? $res->fetch_object()->id : false;
     }
 
     private function getTagsFromPostID($postID)

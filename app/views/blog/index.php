@@ -9,6 +9,7 @@ $blog = $data["blog"];
 $posts = $data["posts"];
 $author = $data["author"];
 $sideMenuItems = $data['posts'];
+$utility = $data['utility'];
 ?>
 
 <?php include('../app/templates/blog/head.php') ?>
@@ -22,6 +23,7 @@ $sideMenuItems = $data['posts'];
             foreach ($posts as $post) {
                 include '../app/templates/blog/post.php';
             }
+            require_once '../app/templates/pagination.php'
             ?>
         </main>
         <aside class="col-md-2">

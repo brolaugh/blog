@@ -13,8 +13,10 @@ class Controller
     {
         require_once '../app/views/' . $view . '.php';
     }
-    public function Error404($backLink = ""){
-        if($backLink == ""){
+
+    public function Error404($backLink = "")
+    {
+        if ($backLink == "") {
             $backLink = $_SERVER['HTTP_REFERER'];
         }
         $this->view("404", ["backlink" => $backLink]);
