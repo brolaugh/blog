@@ -3,6 +3,7 @@ $blog = $data["blog"];
 $post = $data["post"];
 $author = $data["author"];
 $sideMenuItems = $data['sideMenuItems'];
+$utility = $data['utility'];
 ?>
 
 <?php include('../app/templates/blog/head.php') ?>

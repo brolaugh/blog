@@ -24,7 +24,7 @@ class blog extends Controller
     public function index($data = [])
     {
         if (count($data) == 1) {
-            $this->post($data[0]);
+            $this->post($data);
         } else {
             $options = [];
             if ($data[0] == "page" && is_numeric($data[1]) && $data[1] >  0) {

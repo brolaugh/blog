@@ -9,6 +9,7 @@ $blog = $data["blog"];
 $author = $data["author"];
 $post = $data['post'];
 $unPublishedPosts = $data['unpublishedPosts'];
+$utility = $data['utility'];
 ?>
 
 <?php include('../app/templates/blog/head.php') ?>

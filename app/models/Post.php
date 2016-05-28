@@ -16,15 +16,18 @@ class Post extends \Database
     public $statusOptions;
 
     //Fetches data from the database based on the postID argument
-    public function prepare($post, $blogID)
+    public function prepare($post, $blogID = 0)
     {
-
         if (is_numeric($post)) {
             $this->id = $post;
             return $this->insertData($this->getPostByID($post));
         } else if (is_string($post)) {
-            $this->url_title = $post;
-            return $this->insertData($this->getPostByURLTitle($post, $blogID));
+            if($blogID == 0){
+                throw new \Exception('first arugment in \Models\Post::prepare was non numeric string... Need second arugment if first argurment is non numeric string');
+            }else{
+                $this->url_title = $post;
+                return $this->insertData($this->getPostByURLTitle($post, $blogID));
+            }
         }
     }
 
