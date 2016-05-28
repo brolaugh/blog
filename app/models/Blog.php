@@ -39,8 +39,10 @@ class Blog extends \Database
         $stmt->close();
         return $res->fetch_object();
     }
-    private function getNumPosts(){
-        $stmt = $this->database_connection->prepare("SELECT count(id) as numPosts FROM post WHERE blog = ?");
+
+    private function getNumPosts()
+    {
+        $stmt = $this->database_connection->prepare("SELECT count(id) AS numPosts FROM post WHERE blog = ?");
         $stmt->bind_param("i", $this->id);
         $stmt->execute();
         $res = $stmt->get_result();

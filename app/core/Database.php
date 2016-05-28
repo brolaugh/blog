@@ -56,7 +56,7 @@ class Database extends DatabaseConfig
         }
         if (!isset($options['offset'])) {
             $options['offset'] = 0;
-        }else{
+        } else {
             $options['offset'] = ($options['offset'] * $options['limit']) - $options['limit'];
         }
         if (!isset($options['sort_order'])) {

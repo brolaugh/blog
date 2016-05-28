@@ -20,13 +20,11 @@ class blog extends Controller
 
     public function index($data = [])
     {
-        if (count($data) == 1){
+        if (count($data) == 1) {
             $this->post($data[0]);
-        }
-
-        else {
+        } else {
             $options = [];
-            if($data[0] == "page" && is_numeric($data[1])){
+            if ($data[0] == "page" && is_numeric($data[1])) {
                 $options["offset"] = $data[1];
             }
             $posts = (new Database())->getPostsByBlog($this->blog, $options);
@@ -76,7 +74,7 @@ class blog extends Controller
         switch ($post[0]) {
             case "send":
                 $postModel->send($this->blog);
-                header("Location:/".$this->blogModel->name ."/post/" . $postModel->url_title);
+                header("Location:/" . $this->blogModel->name . "/post/" . $postModel->url_title);
                 break;
 
             case "new":
