@@ -19,10 +19,14 @@ $utility = $data['utility'];
     <div class="row">
         <?php include('../app/templates/blog/sidemenu.php') ?>
         <main class="col-md-8">
+            <div id="posts">
+                <?php
+                foreach ($posts as $post) {
+                    include '../app/templates/blog/post.php';
+                }
+                ?>
+            </div>
             <?php
-            foreach ($posts as $post) {
-                include '../app/templates/blog/post.php';
-            }
             require_once '../app/templates/pagination.php'
             ?>
         </main>
