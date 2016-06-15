@@ -8,6 +8,7 @@ A blogging platform written in PHP using the MVC structure
 ### Expansion goals
 * Guest blogging
 * Custom CSS files
+* Use php memcached/memcache
 
 ## Rules
 * One user may have multiple blogs
