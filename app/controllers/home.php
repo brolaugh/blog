@@ -14,7 +14,7 @@ class home extends Controller
         $user->name = $name;
         $blogs = [];
         foreach ((new Database())->getAllBlogs() as $blog) {
-            $newBlog = $this->model("blog");
+            $newBlog = $this->model("Blog");
             $newBlog->prepare($blog);
             $blogs[] = $newBlog;
         }
