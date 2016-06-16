@@ -3,7 +3,7 @@
     <div>
         <?= $post->content ?>
     </div>
-
+    <p><strong>Published on </strong><span class="text-info"><?=$post->publishing_time?></span></p>
     <div class="">
         <?php
         foreach ($post->tags as $t) {
