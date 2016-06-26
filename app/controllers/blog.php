@@ -124,10 +124,11 @@ class blog extends Controller
                 exit();
             }
 
-            /* Code below breaks $postModel
-            foreach($this->model("Post")->getSideMenuItems($this->blog) as $sideMenuItem){
+            // Code below breaks $postModel
+            /* foreach($this->model("Post")->getSideMenuItems($this->blog) as $sideMenuItem){
                 $this->sideMenuItems[] = $sideMenuItem;
             }*/
+
             $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "sideMenuItems" => $this->sideMenuItems, "utility" => $this->utilityModel]);
         }
     }
