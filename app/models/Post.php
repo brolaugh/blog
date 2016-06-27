@@ -81,7 +81,7 @@ class Post extends \Database
 
     }
     public function getTitle(){
-        return htmlspecialchars($this->title);
+        return htmlspecialchars($this->title, ENT_QUOTES, "UTF-8");
     }
 
     public function loadStatusOptions()

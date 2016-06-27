@@ -4,7 +4,7 @@
         <ul class="list">
             <?php
             foreach ($sideMenuItems as $post) {
-                echo "<li><a href='#$post->url_title'>$post->title</a></li>";
+                echo "<li><a href='#", $post->url_title, "'>", $post->getTitle(), '</a></li>';
             }
             ?>
         </ul>
