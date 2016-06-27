@@ -66,10 +66,9 @@ class Post extends \Database
         $this->url_title = strtolower(preg_replace('([^a-zA-Z0-9\+\.=_-])', '', str_replace(' ', '_', $_POST['compose-url-title'])));
         $this->content = $_POST['compose-body'];
         $this->status = $_POST['compose-visibility'];
-        $this->tags = explode(",", trim(",", $_POST['compose-tags']));
-        foreach ($this->tags as $key => $value) {
-            $this->tags[$key] = trim(",", $value);
-        }
+        $this->tags = explode(",", $_POST['compose-tags']);
+
+
         if ($this->doesURLTitleExistInBlog($this->url_title, $this->blog)) {
             //Send client back to /blog/compose
             exit("That URL title already exists on this blog");
@@ -134,6 +133,11 @@ class Post extends \Database
         $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) VALUES(?,?,?,?,?, NOW(), NOW())");
         $stmt->bind_param('isssi', $blog->blog, $blog->title, $blog->url_title, $blog->content, $blog->status);
         $retval = $stmt->execute();
+
+        foreach($this->tags as $tag){
+            $tagObject = \Controller::model("Tags");
+            $tagObject->connectTagAndPost($stmt->insert_id, $tagObject->getTagIdByName($tag));
+        }
         $stmt->free_result();
         $stmt->close();
         return $retval;
