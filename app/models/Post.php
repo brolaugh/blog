@@ -63,7 +63,7 @@ class Post extends \Database
     {
         $this->blog = $blog;
         $this->title = $_POST['compose-title'];
-        $this->url_title = preg_replace('([^a-zA-Z0-9\+\.=_-])', '', str_replace(' ', '_', $_POST['compose-url-title']));
+        $this->url_title = strtolower(preg_replace('([^a-zA-Z0-9\+\.=_-])', '', str_replace(' ', '_', $_POST['compose-url-title'])));
         $this->content = $_POST['compose-body'];
         $this->status = $_POST['compose-visibility'];
         $this->tags = explode(",", trim(",", $_POST['compose-tags']));
