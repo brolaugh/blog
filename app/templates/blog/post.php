@@ -1,5 +1,5 @@
 <div class="well well-sm" id="<?= $post->url_title ?>">
-    <h1> <a href="/<?=$blog->name?>/post/<?=$post->url_title?>"><?= $post->title ?></a></h1>
+    <h1> <a href="/<?=$blog->name?>/post/<?=$post->url_title?>"><?= $post->getTitle() ?></a></h1>
     <div>
         <?= $post->getContent() ?>
     </div>
