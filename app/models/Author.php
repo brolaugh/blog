@@ -1,37 +1,26 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Brolaugh
- * Date: 2016-05-20
- * Time: 21:58
- */
 
 namespace models;
 
 
-class Author extends \Database
+class Author extends User
 {
-    public $id;
-    public $var;
+    private $name;
 
-    public function prepare($authorID)
+    public function prepare($id)
     {
-        $this->id = $authorID;
-        $this->var = $this->getVariblesByAuthorID($this->id);
-    }
-
-    private function getVariblesByAuthorID($authorID)
-    {
-        $stmt = $this->database_connection->prepare("SELECT * FROM author_variables WHERE author = ?");
-        $stmt->bind_param("i", $authorID);
+        $stmt = $this->database_connection->prepare("SELECT * FROM user WHERE id = ? LEFT JOIN author ON user.id=author.id");
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $res = $stmt->get_result();
-        $stmt->free_result();
-        $stmt->close();
-        $retval = [];
-        while ($row = $res->fetch_object()) {
-            $retval[] = $row;
-        }
-        return $retval;
+        if($res->num_rows > 0)
+            $this->fillSelfWithData($res->fetch_object());
     }
+    public function fillSelfWithData($data)
+    {
+        parent::fillSelfWithData($data);
+        $this->name = $data->name;
+    }
+
+
 }

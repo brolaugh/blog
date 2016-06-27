@@ -15,7 +15,7 @@ class App
                 $this->controller = $url[0];
             unset($url[0]);
 
-        }//blog_exists not yet correctly implemented
+        }
         else if ($blog = $this->blog_exists($url[0])) {
             $this->controller = 'blog';
             unset($url[0]);
