@@ -77,6 +77,10 @@ class Post extends \Database
             $this->sendPost($this);
         }
     }
+    public function getContent(){
+        return (new \Parsedown())->setMarkupEscaped(true)->text($this->content);
+
+    }
 
     public function loadStatusOptions()
     {
@@ -114,7 +118,6 @@ class Post extends \Database
             $this->create_time = $data->create_time;
             $this->publishing_time = $data->publishing_time;
             $this->tags = $this->getTagsFromPostID($this->id);
-            $this->content = (new \Parsedown())->parse($this->content);
             return true;
         } else {
             return false;
