@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Rename this file to DatabaseConfig.php and fill the credentials for your database mirror
  */

@@ -1,9 +1,9 @@
 <div class="well well-sm" id="<?= $post->url_title ?>">
-    <h1> <a href="/<?=$blog->name?>/post/<?=$post->url_title?>"><?= $post->getTitle() ?></a></h1>
+    <h1><a href="/<?= $blog->name ?>/post/<?= $post->url_title ?>"><?= $post->getTitle() ?></a></h1>
     <div>
         <?= $post->getContent() ?>
     </div>
-    <p><strong>Published on </strong><span class="text-info"><?=$post->publishing_time?></span></p>
+    <p><strong>Published on </strong><span class="text-info"><?= $post->publishing_time ?></span></p>
     <div class="">
         <?php
         foreach ($post->tags as $t) {

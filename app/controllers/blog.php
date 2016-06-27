@@ -20,7 +20,9 @@ class blog extends Controller
 
         $this->utilityModel = $this->model("Utility");
     }
-    private function calculateUrl($url = []){
+
+    private function calculateUrl($url = [])
+    {
         /*
          * The function argument is an array consisting of a name and data pair.
          * eg. ["page", 4]
@@ -28,9 +30,9 @@ class blog extends Controller
          * The array should always have an even number of indexes
          */
         $popOffs = [];
-        for($i = 0; $i < count($url);$i++){
-            if($url[$i] == "page"){
-                if(isset($url[$i+1])) {
+        for ($i = 0; $i < count($url); $i++) {
+            if ($url[$i] == "page") {
+                if (isset($url[$i + 1])) {
 
                     if (!is_numeric($url[$i + 1])) {
                         $this->utilityModel->currentPage = 1;
@@ -52,54 +54,52 @@ class blog extends Controller
                         // Set current page to the first page
                         $this->utilityModel->currentPage = 1;
                     }
-                    $popOffs[]=$i+1;
+                    $popOffs[] = $i + 1;
                     $i++;
                 }
-                $popOffs[]=$i;
+                $popOffs[] = $i;
 
-            }
-            elseif($url[$i] == "tag"){
-                if(isset($url[$i+1])){
-                    $this->utilityModel->tag = $url[$i+1];
-                    $popOffs[]=$i+1;
+            } elseif ($url[$i] == "tag") {
+                if (isset($url[$i + 1])) {
+                    $this->utilityModel->tag = $url[$i + 1];
+                    $popOffs[] = $i + 1;
                     $i++;
                 }
-                $popOffs[]=$i;
+                $popOffs[] = $i;
 
-            }
-
-            elseif($url[$i] == "search"){
-                if(isset($url[$i+1])){
-                    $this->utilityModel->search = $url[$i+1];
-                    $popOffs[]=$i+1;
+            } elseif ($url[$i] == "search") {
+                if (isset($url[$i + 1])) {
+                    $this->utilityModel->search = $url[$i + 1];
+                    $popOffs[] = $i + 1;
                     $i++;
                 }
-                $popOffs[]=$i;
+                $popOffs[] = $i;
             }
         }
-        foreach($popOffs as $popOffElement){
+        foreach ($popOffs as $popOffElement) {
             unset($url[$popOffElement]);
         }
         return array_values($url);
 
-        
+
     }
+
     public function index($data = [])
     {
         if (count($data) == 1) {
             $this->post($this->calculateUrl($data));
         } else {
             $options = [];
-            if(count($data) != 0){
+            if (count($data) != 0) {
                 $this->calculateUrl($data);
-            }else{
-                $this->utilityModel->totalPages = (int) ceil($this->blogModel->numPosts / $this->utilityModel->pageLimit);
+            } else {
+                $this->utilityModel->totalPages = (int)ceil($this->blogModel->numPosts / $this->utilityModel->pageLimit);
             }
 
 
-            $options["offset"] = ($this->utilityModel->currentPage  - 1 ) * $this->utilityModel->pageLimit;
+            $options["offset"] = ($this->utilityModel->currentPage - 1) * $this->utilityModel->pageLimit;
             $options["limit"] = $this->utilityModel->pageLimit;
-            
+
             $posts = (new Database())->getPostsByBlog($this->blog, $options);
             $postModels = [];
             foreach ($posts as $postID) {
@@ -132,6 +132,7 @@ class blog extends Controller
             $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "sideMenuItems" => $this->sideMenuItems, "utility" => $this->utilityModel]);
         }
     }
+
     public function compose($post = ["new"])
     {
         $postModel = $this->model("Post");

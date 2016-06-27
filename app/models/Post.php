@@ -22,9 +22,9 @@ class Post extends \Database
             $this->id = $post;
             return $this->fillSelfWithData($this->getPostByID($post));
         } else if (is_string($post)) {
-            if($blogID == 0){
+            if ($blogID == 0) {
                 throw new \Exception('first arugment in \Models\Post::prepare was non numeric string... Need second arugment if first argurment is non numeric string');
-            }else{
+            } else {
                 $this->url_title = $post;
                 return $this->fillSelfWithData($this->getPostByURLTitle($post, $blogID));
             }
@@ -76,11 +76,15 @@ class Post extends \Database
             $this->sendPost($this);
         }
     }
-    public function getContent(){
+
+    public function getContent()
+    {
         return (new \Parsedown())->setMarkupEscaped(true)->text($this->content);
 
     }
-    public function getTitle(){
+
+    public function getTitle()
+    {
         return htmlspecialchars($this->title, ENT_QUOTES, "UTF-8");
     }
 
@@ -135,7 +139,7 @@ class Post extends \Database
         $stmt->bind_param('isssi', $blog->blog, $blog->title, $blog->url_title, $blog->content, $blog->status);
         $retval = $stmt->execute();
 
-        foreach($this->tags as $tag){
+        foreach ($this->tags as $tag) {
             $tagObject = \Controller::model("Tags");
             $tagObject->connectTagAndPost($stmt->insert_id, $tagObject->getTagIdByName($tag));
         }
