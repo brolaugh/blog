@@ -20,13 +20,13 @@ class Post extends \Database
     {
         if (is_numeric($post)) {
             $this->id = $post;
-            return $this->insertData($this->getPostByID($post));
+            return $this->fillSelfWithData($this->getPostByID($post));
         } else if (is_string($post)) {
             if($blogID == 0){
                 throw new \Exception('first arugment in \Models\Post::prepare was non numeric string... Need second arugment if first argurment is non numeric string');
             }else{
                 $this->url_title = $post;
-                return $this->insertData($this->getPostByURLTitle($post, $blogID));
+                return $this->fillSelfWithData($this->getPostByURLTitle($post, $blogID));
             }
         }
     }
@@ -109,9 +109,10 @@ class Post extends \Database
         return $res->fetch_object();
     }
 
-    private function insertData($data)
+    private function fillSelfWithData($data)
     {
         if (isset($data)) {
+            $this->id = $data->id;
             $this->blog = $data->blog;
             $this->title = $data->title;
             $this->url_title = $data->url_title;
@@ -161,12 +162,12 @@ class Post extends \Database
         $stmt->bind_param("i", $postID);
         $stmt->execute();
         $res = $stmt->get_result();
-        $stmt->free_result();
-        $stmt->close();
         $retval = [];
         while ($row = $res->fetch_object()) {
             $retval[] = $row->name;
         }
+        $stmt->free_result();
+        $stmt->close();
         return $retval;
     }
 }
