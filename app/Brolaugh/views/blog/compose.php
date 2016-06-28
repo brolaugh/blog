@@ -12,15 +12,15 @@ $unPublishedPosts = $data['unpublishedPosts'];
 $utility = $data['utility'];
 ?>
 
-<?php include('../app/templates/blog/head.php') ?>
+<?php include('../app/Brolaugh/templates/blog/head.php') ?>
 <body>
-<?php include('../app/templates/blog/header.php') ?>
+<?php include('../app/Brolaugh/templates/blog/header.php') ?>
 <div class="container-fluid">
     <div class="row">
         <!--Switch out for list of non published and draft posts-->
-        <?php include('../app/templates/blog/compose/sidemenu.php') ?>
+        <?php include('../app/Brolaugh/templates/blog/compose/sidemenu.php') ?>
         <main class="col-md-8">
-            <?php include('../app/templates/blog/compose.php') ?>
+            <?php include('../app/Brolaugh/templates/blog/compose.php') ?>
         </main>
         <aside class="col-md-2">
             Ads
@@ -29,5 +29,5 @@ $utility = $data['utility'];
 
 
 </div>
-<?php include('../app/templates/footer.php') ?>
+<?php include('../app/Brolaugh/templates/footer.php') ?>
 </body>

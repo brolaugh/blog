@@ -1,9 +1,9 @@
 <?php
 $backlink = $data['backlink'];
 ?>
-<?php include('../app/templates/blog/head.php') ?>
+<?php include('../app/Brolaugh/templates/blog/head.php') ?>
 <body>
-<?php include('../app/templates/blog/header.php') ?>
+<?php include('../app/Brolaugh/templates/blog/header.php') ?>
 <div class="container-fluid">
     <div class="row">
         <main class="col-md-8">
@@ -15,5 +15,5 @@ $backlink = $data['backlink'];
 
 
 </div>
-<?php include('../app/templates/footer.php') ?>
+<?php include('../app/Brolaugh/templates/footer.php') ?>
 </body>

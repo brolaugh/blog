@@ -1,7 +1,8 @@
 <?php
 
-namespace models;
+namespace Brolaugh\Model;
 
+use \Brolaugh\Core\Database;
 
 class Utility
 {
