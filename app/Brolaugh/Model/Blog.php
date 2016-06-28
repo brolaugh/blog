@@ -1,8 +1,10 @@
 <?php
 
-namespace models;
+namespace Brolaugh\Model;
 
-class Blog extends \Database
+use \Brolaugh\Core\Database;
+
+class Blog extends Database
 {
     public $id;
     public $title;

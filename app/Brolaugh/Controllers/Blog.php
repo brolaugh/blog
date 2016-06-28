@@ -1,6 +1,10 @@
 <?php
 
-class blog extends Controller
+namespace Brolaugh\Controllers;
+
+use Brolaugh\Core\Controller;
+
+class Blog extends Controller
 {
     private $blog;
     private $blogModel;
@@ -100,7 +104,7 @@ class blog extends Controller
             $options["offset"] = ($this->utilityModel->currentPage - 1) * $this->utilityModel->pageLimit;
             $options["limit"] = $this->utilityModel->pageLimit;
 
-            $posts = (new Database())->getPostsByBlog($this->blog, $options);
+            $posts = (new \Brolaugh\Core\Database())->getPostsByBlog($this->blog, $options);
             $postModels = [];
             foreach ($posts as $postID) {
                 $post = $this->model("Post");
@@ -149,13 +153,13 @@ class blog extends Controller
                 break;
 
             case "new":
-                $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
+                $unPublishedPostModels = (new \Brolaugh\Core\Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
                 break;
 
             default:
                 //get $post from database and fill forms
-                $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
+                $unPublishedPostModels = (new \Brolaugh\Core\Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
                 $postModel->prepare($post, $this->blog);
                 break;

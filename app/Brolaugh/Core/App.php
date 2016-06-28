@@ -1,8 +1,10 @@
 <?php
 
+namespace Brolaugh\Core;
+
 class App
 {
-    protected $controller = 'home';
+    protected $controller = 'Home';
     protected $method = 'index';
     protected $param = [];
 
@@ -10,21 +12,24 @@ class App
     {
         $blog = "";
         $url = $this->parseUrl();
-        if (file_exists('../app/controllers/' . $url[0] . '.php')) {
-            if ($url[0] != 'blog')
+        if (file_exists('../app/Brolaugh/Controllers/' . $url[0] . '.php')) {
+            if ($url[0] != 'Blog')
                 $this->controller = $url[0];
             unset($url[0]);
 
-        }//blog_exists not yet correctly implemented
-        else if ($blog = $this->blog_exists($url[0])) {
-            $this->controller = 'blog';
+        } else if ($blog = $this->blog_exists($url[0])) {
+            $this->controller = 'Blog';
             unset($url[0]);
         }
 
 
-        require_once '../app/controllers/' . $this->controller . '.php';
-
-        $this->controller = ($this->controller == 'blog') ? new $this->controller($blog) : new $this->controller();
+        if ($this->controller == 'Blog') {
+            $controller = "\\Brolaugh\\Controllers\\" . $this->controller;
+            $this->controller = new $controller($blog);
+        } else {
+            $controller = "\\Brolaugh\\Controllers\\" . $this->controller;
+            $this->controller = new $controller($blog);
+        }
 
         if (isset($url[1])) {
             if (method_exists($this->controller, $url[1])) {

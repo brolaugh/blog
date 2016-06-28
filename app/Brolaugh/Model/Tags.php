@@ -1,9 +1,10 @@
 <?php
 
-namespace models;
+namespace Brolaugh\Model;
 
+use \Brolaugh\Core\Database;
 
-class Tags extends \Database
+class Tags extends Database
 {
     public function connectTagAndPost($postID, $tagID)
     {
