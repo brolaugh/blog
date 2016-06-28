@@ -2,7 +2,6 @@
 
 namespace models;
 
-
 class Author extends User
 {
     private $name;
@@ -21,6 +20,4 @@ class Author extends User
         parent::fillSelfWithData($data);
         $this->name = $data->name;
     }
-
-
 }

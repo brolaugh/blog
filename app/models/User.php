@@ -1,5 +1,4 @@
 <?php
-
 namespace models;
 
 
@@ -18,6 +17,7 @@ class User extends \Database
         if($res->num_rows > 0)
             $this->fillSelfWithData($res->fetch_object());
     }
+
     protected function fillSelfWithData($data){
         $this->id = $data->id;
         $this->username = $data->username;
