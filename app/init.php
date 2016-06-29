@@ -1,6 +1,20 @@
+<!DOCTYPE html>
+<html>
 <?php
+use Brolaugh\Core\App;
 
-require_once 'core/App.php';
-require_once 'core/Controller.php';
-require_once 'core/Database.php';
-require_once '../lib/Parsedown.php';
+function var_dumpi($arg)
+{
+    echo '<pre>';
+    var_dump($arg);
+    echo '</pre>';
+}
+
+define('INC_ROOT', dirname(__DIR__));
+require INC_ROOT . '/vendor/autoload.php';
+\php_error\reportErrors();
+
+$app = new App;
+
+?>
+</html>
