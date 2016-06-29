@@ -142,7 +142,7 @@ class Post extends Database
         $retval = $stmt->execute();
 
         foreach ($this->tags as $tag) {
-            $tagObject = \Controller::model("Tags");
+            $tagObject = \Brolaugh\Core\Controller::model("Tags");
             $tagObject->connectTagAndPost($stmt->insert_id, $tagObject->getTagIdByName($tag));
         }
         $stmt->free_result();

@@ -19,6 +19,7 @@ class Tags extends Database
 
     public function getTagIdByName($tagName)
     {
+        $tagName = strtolower(trim($tagName));
         $stmt = $this->database_connection->prepare("SELECT id FROM tag WHERE name = ?");
         $stmt->bind_param('s', $tagName);
         if (!$stmt->execute()) {
