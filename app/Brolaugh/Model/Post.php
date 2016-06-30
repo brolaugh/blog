@@ -1,6 +1,7 @@
 <?php
 namespace Brolaugh\Model;
 
+use Brolaugh\Core\Controller;
 use \Brolaugh\Core\Database;
 
 class Post extends Database
@@ -142,7 +143,7 @@ class Post extends Database
     $retval = $stmt->execute();
 
     foreach ($this->tags as $tag) {
-      $tagObject = \Brolaugh\Core\Controller::model("Tags");
+      $tagObject = Controller::model("Tags");
       $tagObject->connectTagAndPost($stmt->insert_id, $tagObject->getTagIdByName($tag));
     }
     $stmt->free_result();
