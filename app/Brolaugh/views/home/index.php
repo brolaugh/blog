@@ -1,11 +1,10 @@
-<?php
-require_once '../app/Brolaugh/templates/home/head.php';
-?>
-<body>
-<?php
-require_once '../app/Brolaugh/templates/home/header.php';
-require_once '../app/Brolaugh/templates/home/bloglist.php';
+{% extends "base.php" %}
 
-?>
-<?php include('../app/Brolaugh/templates/footer.php') ?>
-</body>
+{% block head %}
+  {% include "home/head.php" %}
+{% endblock %}
+
+{% block body %}
+  {% include 'home/header.php' %}
+  {% include 'home/bloglist.php' %}
+{% endblock %}

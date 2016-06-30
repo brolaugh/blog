@@ -3,6 +3,7 @@
 namespace Brolaugh\Controllers;
 
 use Brolaugh\Core\Controller;
+use Brolaugh\Core\Database;
 
 class Blog extends Controller
 {
@@ -14,6 +15,7 @@ class Blog extends Controller
 
     public function __construct($blog)
     {
+        parent::__construct();
         $this->blog = $blog;
 
         $this->blogModel = $this->model("Blog");
@@ -104,14 +106,19 @@ class Blog extends Controller
             $options["offset"] = ($this->utilityModel->currentPage - 1) * $this->utilityModel->pageLimit;
             $options["limit"] = $this->utilityModel->pageLimit;
 
-            $posts = (new \Brolaugh\Core\Database())->getPostsByBlog($this->blog, $options);
+            $posts = (new Database())->getPostsByBlog($this->blog, $options);
             $postModels = [];
             foreach ($posts as $postID) {
                 $post = $this->model("Post");
                 $post->prepare($postID, $this->blog);
                 $postModels[] = $post;
             }
-            $this->view("blog/index", ["blog" => $this->blogModel, "posts" => $postModels, "author" => $this->authorModel, "utility" => $this->utilityModel]);
+            $this->view("blog/index", [
+                "blog" => $this->blogModel,
+                "posts" => $postModels,
+                "author" => $this->authorModel,
+                "utility" => $this->utilityModel
+            ]);
         }
 
     }
@@ -133,7 +140,13 @@ class Blog extends Controller
                 $this->sideMenuItems[] = $sideMenuItem;
             }*/
 
-            $this->view("blog/post", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "sideMenuItems" => $this->sideMenuItems, "utility" => $this->utilityModel]);
+            $this->view("blog/post", [
+                "blog" => $this->blogModel,
+                "post" => $postModel,
+                "author" => $this->authorModel,
+                "sideMenuItems" => $this->sideMenuItems,
+                "utility" => $this->utilityModel
+            ]);
         }
     }
 
@@ -153,19 +166,25 @@ class Blog extends Controller
                 break;
 
             case "new":
-                $unPublishedPostModels = (new \Brolaugh\Core\Database())->getPostsByBlog($this->blog, $options);
+                $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
                 break;
 
             default:
                 //get $post from database and fill forms
-                $unPublishedPostModels = (new \Brolaugh\Core\Database())->getPostsByBlog($this->blog, $options);
+                $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
                 $postModel->loadStatusOptions();
                 $postModel->prepare($post, $this->blog);
                 break;
 
         }
-        $this->view("blog/compose", ["blog" => $this->blogModel, "post" => $postModel, "author" => $this->authorModel, "unpublishedPosts" => $unPublishedPostModels, "utility" => $this->utilityModel]);
+        $this->view("blog/compose", [
+            "blog" => $this->blogModel,
+            "post" => $postModel,
+            "author" => $this->authorModel,
+            "unpublishedPosts" => $unPublishedPostModels,
+            "utility" => $this->utilityModel
+        ]);
     }
 
 }

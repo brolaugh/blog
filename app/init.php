@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <?php
 use Brolaugh\Core\App;
 
@@ -17,4 +15,3 @@ require INC_ROOT . '/vendor/autoload.php';
 $app = new App;
 
 ?>
-</html>

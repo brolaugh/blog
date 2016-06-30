@@ -3,15 +3,25 @@ namespace Brolaugh\Core;
 
 class Controller
 {
+    private $twig;
+    public function __construct(){
+        $loader = new \Twig_Loader_Filesystem('../app/Brolaugh/views/');
+        $this->twig = new \Twig_Environment($loader, [
+            'cache' => "../bin/",
+            //'debug' => true,
+        ]);
+    }
+
     public static function model($model)
     {
         $model = '\Brolaugh\Model\\' . $model;
         return new $model();
     }
 
-    public static function view($view, $data = [])
+    public function view($view, $data = [])
     {
-        require_once '../app/Brolaugh/views/' . $view . '.php';
+        echo $this->twig->render($view . ".php", $data);
+
     }
 
     public function Error404($backLink = "")
@@ -21,4 +31,3 @@ class Controller
 
     }
 }
-

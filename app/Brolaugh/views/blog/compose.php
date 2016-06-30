@@ -1,16 +1,3 @@
-<?php
-/**
- * Created by IntelliJ IDEA.
- * User: Brolaugh
- * Date: 2016-05-20
- * Time: 20:44
- */
-$blog = $data["blog"];
-$author = $data["author"];
-$post = $data['post'];
-$unPublishedPosts = $data['unpublishedPosts'];
-$utility = $data['utility'];
-?>
 
 <?php include('../app/Brolaugh/templates/blog/head.php') ?>
 <body>

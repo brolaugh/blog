@@ -25,7 +25,7 @@ class Post extends Database
             return $this->fillSelfWithData($this->getPostByID($post));
         } else if (is_string($post)) {
             if ($blogID == 0) {
-                throw new \Exception('first arugment in \Models\Post::prepare was non numeric string... Need second arugment if first argurment is non numeric string');
+                throw new \Exception('first argument in \Models\Post::prepare was non numeric string... Need second argument if first argument is non numeric string');
             } else {
                 $this->url_title = $post;
                 return $this->fillSelfWithData($this->getPostByURLTitle($post, $blogID));

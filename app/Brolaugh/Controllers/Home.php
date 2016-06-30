@@ -16,6 +16,8 @@ class Home extends Controller
             $newBlog->prepare($blog);
             $blogs[] = $newBlog;
         }
-        $this->view('home/index', ['blogs' => $blogs]);
+        $this->view('home/index', [
+            'blogs' => $blogs
+        ]);
     }
 }
