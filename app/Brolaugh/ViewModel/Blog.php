@@ -17,7 +17,7 @@ class Blog
   {
     $this->id = $blogModel->id;
     $this->title = $blogModel->title;
-    $this->name = $blogModel->author;
+    $this->name = $blogModel->name;
     $this->description = $blogModel->description;
     $this->stylesheet = $blogModel->stylesheet;
     $this->numPosts = $blogModel->numPosts;
