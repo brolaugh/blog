@@ -21,7 +21,7 @@ class Post
   {
     $this->id = $postModel->id;
     $this->blog = $postModel->blog;
-    $this->title = $postModel->title;
+    $this->title = htmlspecialchars($postModel->title, ENT_QUOTES, "UTF-8");
     $this->url_title = $postModel->url_title;
     $this->content = (new \Parsedown())->setMarkupEscaped(true)->text($postModel->content);
     $this->status = $postModel->status;

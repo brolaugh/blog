@@ -120,9 +120,10 @@ class Blog extends Controller
       $this->utilityModel->calculatePagination();
       $this->view("blog/index", [
           "blog" => new ViewBlog($this->blogModel),
-          "post" => $this->multiConstruct($postModels),
+          "posts" => $this->multiConstruct($postModels),
           "author" => new ViewAuthor($this->authorModel),
-          "utility" => new ViewUtility($this->utilityModel)
+          "utility" => new ViewUtility($this->utilityModel),
+          "sideMenuItems" => $this->multiConstruct($postModels),
       ]);
     }
 
