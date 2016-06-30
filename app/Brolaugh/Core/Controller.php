@@ -7,7 +7,7 @@ class Controller
   public function __construct(){
     $loader = new \Twig_Loader_Filesystem('../app/Brolaugh/views/');
     $this->twig = new \Twig_Environment($loader, [
-      //'cache' => "../bin/",
+      'cache' => "../twigcache/",
       'debug' => true,
       'auto_reload' => true,
       'autoescape' => false,
