@@ -1,29 +1,26 @@
-<?php
+{% extends 'base.php' %}
+{% block head %}
+  {% include 'blog/head.php'%}
+{% endblock %}
 
-$blog = $data["blog"];
-$posts = $data["posts"];
-$author = $data["author"];
-$sideMenuItems = $data['posts'];
-$utility = $data['utility'];
-?>
+{% block body %}
+  {% include 'blog/header.php'%}
 
-<?php include('../app/Brolaugh/templates/blog/head.php') ?>
-<body>
-<?php include('../app/Brolaugh/templates/blog/header.php') ?>
 <div class="container-fluid">
     <div class="row">
-        <?php include('../app/Brolaugh/templates/blog/sidemenu.php') ?>
+        {% include 'blog/sidemenu.php'%}
+
         <main class="col-md-8">
             <div id="posts">
-                <?php
-                foreach ($posts as $post) {
-                    include '../app/Brolaugh/templates/blog/post.php';
-                }
-                ?>
+                {% for post in posts %}
+                    {% include 'blog/post/post.php'%}
+                {% else %}
+                    <p>
+                      I'm sorry to say that there is no posts.
+                    </p>
+                {% endfor %}
             </div>
-            <?php
-            require_once '../app/Brolaugh/templates/pagination.php'
-            ?>
+            {% include 'base/pagination.php' %}
         </main>
         <aside class="col-md-2">
             Ads
@@ -32,5 +29,4 @@ $utility = $data['utility'];
 
 
 </div>
-<?php include('../app/Brolaugh/templates/footer.php') ?>
-</body>
+{% endblock %}

@@ -85,6 +85,7 @@ class Blog extends Controller
         foreach ($popOffs as $popOffElement) {
             unset($url[$popOffElement]);
         }
+        $this->utilityModel->calculatePagination();
         return array_values($url);
 
 
