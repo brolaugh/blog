@@ -4,7 +4,7 @@ namespace Brolaugh\Model;
 
 class Author extends User
 {
-  private $name;
+  public $name;
 
   public function prepare($id)
   {

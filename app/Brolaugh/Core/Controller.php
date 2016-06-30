@@ -30,4 +30,12 @@ class Controller
     $this->view("404", ["backlink" => $backLink]);
 
   }
+  protected function multiConstruct($models){
+    $retval= [];
+    foreach($models as $model){
+      $modelName =  '\Brolaugh\ViewModel\\' . (new \ReflectionClass($model))->getShortName();
+      $retval[] = new $modelName($model);
+    }
+    return $retval;
+  }
 }

@@ -4,6 +4,11 @@ namespace Brolaugh\Controllers;
 
 use Brolaugh\Core\Controller;
 use Brolaugh\Core\Database;
+use Brolaugh\ViewModel\Author as ViewAuthor;
+use Brolaugh\ViewModel\Blog as ViewBlog;
+use Brolaugh\ViewModel\Post as ViewPost;
+use Brolaugh\ViewModel\Utility as ViewUtility;
+
 
 class Blog extends Controller
 {
@@ -41,10 +46,9 @@ class Blog extends Controller
         if (isset($url[$i + 1])) {
 
           if (!is_numeric($url[$i + 1]))
-          $this->utilityModel->currentPage = 1;
+            $this->utilityModel->currentPage = 1;
           else
-          $this->utilityModel->currentPage = (int)$url[$i + 1];
-
+            $this->utilityModel->currentPage = (int)$url[$i + 1];
 
 
           //Calculation of how many pages exist
@@ -94,14 +98,13 @@ class Blog extends Controller
   public function index($data = [])
   {
     if (count($data) == 1)
-    $this->post($this->calculateUrl($data));
+      $this->post($this->calculateUrl($data));
     else {
       $options = [];
       if (count($data) != 0)
-      $this->calculateUrl($data);
+        $this->calculateUrl($data);
       else
-      $this->utilityModel->totalPages = (int)ceil($this->blogModel->numPosts / $this->utilityModel->pageLimit);
-
+        $this->utilityModel->totalPages = (int)ceil($this->blogModel->numPosts / $this->utilityModel->pageLimit);
 
 
       $options["offset"] = ($this->utilityModel->currentPage - 1) * $this->utilityModel->pageLimit;
@@ -116,10 +119,10 @@ class Blog extends Controller
       }
       $this->utilityModel->calculatePagination();
       $this->view("blog/index", [
-        "blog" => $this->blogModel,
-        "posts" => $postModels,
-        "author" => $this->authorModel,
-        "utility" => $this->utilityModel
+          "blog" => new ViewBlog($this->blogModel),
+          "post" => $this->multiConstruct($postModels),
+          "author" => new ViewAuthor($this->authorModel),
+          "utility" => new ViewUtility($this->utilityModel)
       ]);
     }
 
@@ -142,51 +145,51 @@ class Blog extends Controller
       $this->sideMenuItems[] = $sideMenuItem;
     }*/
 
-    $this->view("blog/post", [
-      "blog" => $this->blogModel,
-      "post" => $postModel,
-      "author" => $this->authorModel,
-      "sideMenuItems" => $this->sideMenuItems,
-      "utility" => $this->utilityModel
+      $this->view("blog/post", [
+          "blog" => new ViewBlog($this->blogModel),
+          "post" => new ViewPost($postModel),
+          "author" => new ViewAuthor($this->authorModel),
+          "sideMenuItems" => $this->multiConstruct($this->sideMenuItems),
+          "utility" => new ViewUtility($this->utilityModel)
+      ]);
+    }
+  }
+
+  public function compose($post = ["new"])
+  {
+    $postModel = $this->model("Post");
+    $unPublishedPostModels = [];
+    $options = [
+        "limit" => "int.MaxValue",
+        "offset" => 0,
+        "status" => [1]
+    ];
+    switch ($post[0]) {
+      case "send":
+        $postModel->send($this->blog);
+        header("Location:/" . $this->blogModel->name . "/post/" . $postModel->url_title);
+        break;
+
+      case "new":
+        $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
+        $postModel->loadStatusOptions();
+        break;
+
+      default:
+        //get $post from database and fill forms
+        $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
+        $postModel->loadStatusOptions();
+        $postModel->prepare($post, $this->blog);
+        break;
+
+    }
+    $this->view("blog/compose", [
+        "blog" => new ViewBlog($this->blogModel),
+        "post" => new ViewPost($postModel),
+        "author" => new ViewAuthor($this->authorModel),
+        "unpublishedPosts" => $this->multiConstruct($unPublishedPostModels),
+        "utility" => new ViewUtility($this->utilityModel)
     ]);
   }
-}
-
-public function compose($post = ["new"])
-{
-  $postModel = $this->model("Post");
-  $unPublishedPostModels = [];
-  $options = [
-    "limit" => "int.MaxValue",
-    "offset" => 0,
-    "status" => [1]
-  ];
-  switch ($post[0]) {
-    case "send":
-    $postModel->send($this->blog);
-    header("Location:/" . $this->blogModel->name . "/post/" . $postModel->url_title);
-    break;
-
-    case "new":
-    $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
-    $postModel->loadStatusOptions();
-    break;
-
-    default:
-    //get $post from database and fill forms
-    $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
-    $postModel->loadStatusOptions();
-    $postModel->prepare($post, $this->blog);
-    break;
-
-  }
-  $this->view("blog/compose", [
-    "blog" => $this->blogModel,
-    "post" => $postModel,
-    "author" => $this->authorModel,
-    "unpublishedPosts" => $unPublishedPostModels,
-    "utility" => $this->utilityModel
-  ]);
-}
 
 }

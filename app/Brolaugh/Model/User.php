@@ -6,7 +6,7 @@ use \Brolaugh\Core\Database;
 class User extends Database
 {
   protected $id;
-  private $username;
+  public $username;
   private $password;
   private $email;
 

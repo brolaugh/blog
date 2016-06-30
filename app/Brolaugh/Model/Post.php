@@ -80,17 +80,6 @@ class Post extends Database
     }
   }
 
-  public function getContent()
-  {
-    return (new \Parsedown())->setMarkupEscaped(true)->text($this->content);
-
-  }
-
-  public function getTitle()
-  {
-    return htmlspecialchars($this->title, ENT_QUOTES, "UTF-8");
-  }
-
   public function loadStatusOptions()
   {
     $stmt = $this->database_connection->prepare("SELECT * FROM post_status");
@@ -118,21 +107,15 @@ class Post extends Database
 
   private function fillSelfWithData($data)
   {
-    if (isset($data)) {
-      $this->id = $data->id;
-      $this->blog = $data->blog;
-      $this->title = $data->title;
-      $this->url_title = $data->url_title;
-      $this->content = $data->content;
-      $this->status = $data->status;
-      $this->create_time = $data->create_time;
-      $this->publishing_time = $data->publishing_time;
-      $this->tags = $this->getTagsFromPostID($this->id);
-      return true;
-    } else {
-      return false;
-    }
-
+    $this->id = $data->id;
+    $this->blog = $data->blog;
+    $this->title = $data->title;
+    $this->url_title = $data->url_title;
+    $this->content = $data->content;
+    $this->status = $data->status;
+    $this->create_time = $data->create_time;
+    $this->publishing_time = $data->publishing_time;
+    $this->tags = $this->getTagsFromPostID($this->id);
   }
 
   //Sends the data to the database as a new row
