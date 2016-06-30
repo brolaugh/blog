@@ -9,10 +9,11 @@
 
   {% for page in utility.pagination %}
       {% if page == utility.currentPage %}
+
         <li class="active">
           <a href="javascript:void(0)">
-          {{ utility.currentPage }}
-        </a>
+            {{ utility.currentPage }}
+          </a>
         </li>
       {% else %}
         <li>
