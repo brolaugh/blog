@@ -137,9 +137,11 @@ class Blog extends Controller
 
       $postModel = $this->model("Post");
       if (!$postModel->prepare($post[0], $this->blog)) {
+        var_dumpi($this->blog);
         $this->Error404();
         exit();
       }
+
 
       // Code below breaks $postModel
       /* foreach($this->model("Post")->getSideMenuItems($this->blog) as $sideMenuItem){

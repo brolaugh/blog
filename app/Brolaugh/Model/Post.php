@@ -23,13 +23,22 @@ class Post extends Database
   {
     if (is_numeric($post)) {
       $this->id = $post;
-      return $this->fillSelfWithData($this->getPostByID($post));
+      if($dbPost = $this->getPostByID($post)){
+        $this->fillSelfWithData($dbPost);
+        return true;
+      } else
+        return false;
+
     } else if (is_string($post)) {
       if ($blogID == 0) {
         throw new \Exception('first argument in \Models\Post::prepare was non numeric string... Need second argument if first argument is non numeric string');
       } else {
         $this->url_title = $post;
-        return $this->fillSelfWithData($this->getPostByURLTitle($post, $blogID));
+        if($dbPost = $this->getPostByURLTitle($post, $blogID)){
+          $this->fillSelfWithData($dbPost);
+          return true;
+        }else
+          return false;
       }
     }
   }
