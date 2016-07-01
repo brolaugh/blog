@@ -16,10 +16,17 @@ class Account extends Controller
 
     $this->userModel = $this->model("User");
   }
+  public function index($args){
+    if(!$this->userModel->isloggedIn())
+      $this->login($args);
+     else{
+
+    }
+  }
 
   public function login($args){
     if($args[0] == 'send'){
-
+      $this->userModel->login();
     } else
       $this->view("account/login", [
           'user' => $this->userModel
@@ -29,11 +36,11 @@ class Account extends Controller
   }
   public function register($args){
     if($args[0] == 'send'){
-
+      $this->userModel->register();
     } else
       $this->view("account/register",
           ['user' => $this->userModel]
           );
-    
+
   }
 }

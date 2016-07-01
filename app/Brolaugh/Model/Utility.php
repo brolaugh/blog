@@ -21,4 +21,7 @@ class Utility
       }
     }
   }
+  public static function validUsername($username){
+    return preg_match('([A-Za-z0-9-_.])\w+', $username);
+  }
 }
