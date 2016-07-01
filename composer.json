@@ -1,4 +1,17 @@
 {
+  "name": "Brolaugh/blog",
+  "description": "A blogging plattform written in PHP",
+  "version": "0.1.0-dev",
+  "homepage": "http://blog.brolaugh.com",
+  "authors": [
+    {
+      "name": "Hannes Kindströmmer",
+      "email": "me@brolaugh.com",
+      "homepage": "https://github.com/brolaugh",
+      "role": "Developer"
+    }
+  ],
+
   "autoload": {
     "psr-4": {
       "Brolaugh\\": "app/Brolaugh"
