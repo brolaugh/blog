@@ -28,5 +28,6 @@ class Post
     $this->create_time = $postModel->create_time;
     $this->publishing_time = $postModel->publishing_time;
     $this->tags = $postModel->tags;
+    $this->statusOptions = $postModel->statusOptions;
   }
 }
