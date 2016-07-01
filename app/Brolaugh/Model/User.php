@@ -3,7 +3,7 @@ namespace Brolaugh\Model;
 
 use \Brolaugh\Core\Database;
 
-class User extends Database
+class User
 {
   protected $id;
   public $username;
@@ -12,7 +12,7 @@ class User extends Database
 
   public function prepare($id)
   {
-    $stmt = $this->database_connection->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt = Database::prepare("SELECT * FROM user WHERE id = ?");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $res = $stmt->get_result();

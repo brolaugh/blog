@@ -4,7 +4,7 @@ namespace Brolaugh\Model;
 
 use \Brolaugh\Core\Database;
 
-class Blog extends Database
+class Blog
 {
   public $id;
   public $title;
@@ -27,7 +27,7 @@ class Blog extends Database
 
   private function getBlogByID($blogID)
   {
-    $stmt = $this->database_connection->prepare("SELECT * FROM blog WHERE id = ?");
+    $stmt = Database::prepare("SELECT * FROM blog WHERE id = ?");
     $stmt->bind_param("i", $blogID);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -38,7 +38,7 @@ class Blog extends Database
 
   private function getNumPosts()
   {
-    $stmt = $this->database_connection->prepare("SELECT count(id) AS numPosts FROM post WHERE blog = ?");
+    $stmt = Database::prepare("SELECT count(id) AS numPosts FROM post WHERE blog = ?");
     $stmt->bind_param("i", $this->id);
     $stmt->execute();
     $res = $stmt->get_result();

@@ -2,13 +2,15 @@
 
 namespace Brolaugh\Model;
 
+use Brolaugh\Core\Database;
+
 class Author extends User
 {
   public $name;
 
   public function prepare($id)
   {
-    $stmt = $this->database_connection->prepare("SELECT * FROM user LEFT JOIN author ON user.id=author.id WHERE user.id = ? ");
+    $stmt = Database::prepare("SELECT * FROM user LEFT JOIN author ON user.id=author.id WHERE user.id = ? ");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $res = $stmt->get_result();

@@ -4,13 +4,13 @@ namespace Brolaugh\Model;
 
 use \Brolaugh\Core\Database;
 
-class Tags extends Database
+class Tags
 {
   public function connectTagAndPost($postID, $tagID)
   {
     var_dumpi("postID = " . $postID);
     var_dumpi("tagID = " . $tagID);
-    $stmt = $this->database_connection->prepare("INSERT INTO post_tag(post, tag) VALUES(?,?)");
+    $stmt = Database::prepare("INSERT INTO post_tag(post, tag) VALUES(?,?)");
     $stmt->bind_param('ii', $postID, $tagID);
     if (!$stmt->execute()) {
       die("connectTagAndPost\n" . $stmt->error);
@@ -20,7 +20,7 @@ class Tags extends Database
   public function getTagIdByName($tagName)
   {
     $tagName = strtolower(trim($tagName));
-    $stmt = $this->database_connection->prepare("SELECT id FROM tag WHERE name = ?");
+    $stmt = Database::prepare("SELECT id FROM tag WHERE name = ?");
     $stmt->bind_param('s', $tagName);
     if (!$stmt->execute()) {
       die("getTagIdByName\n" . $stmt->error_list);
@@ -36,7 +36,7 @@ class Tags extends Database
 
   private function createTagAndReturnId($tagName)
   {
-    $stmt = $this->database_connection->prepare("INSERT INTO tag(name) VALUES(?)");
+    $stmt = Database::prepare("INSERT INTO tag(name) VALUES(?)");
     $stmt->bind_param('s', $tagName);
     if (!$stmt->execute()) {
       die("createTagAndReturnId\n" . $stmt->error_list);

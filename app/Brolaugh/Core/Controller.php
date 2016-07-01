@@ -12,7 +12,7 @@ class Controller
   public static function model($model)
   {
     $model = '\Brolaugh\Model\\' . $model;
-    return new $model();
+    return new $model;
   }
 
   public function view($view, $data = [])

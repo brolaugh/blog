@@ -22,7 +22,6 @@ class Blog extends Controller
   {
     parent::__construct();
     $this->blog = $blog;
-
     $this->blogModel = $this->model("Blog");
     $this->blogModel->prepare($this->blog);
 
@@ -110,7 +109,7 @@ class Blog extends Controller
       $options["offset"] = ($this->utilityModel->currentPage - 1) * $this->utilityModel->pageLimit;
       $options["limit"] = $this->utilityModel->pageLimit;
 
-      $posts = (new Database())->getPostsByBlog($this->blog, $options);
+      $posts = Database::getPostsByBlog($this->blog, $options);
       $postModels = [];
       foreach ($posts as $postID) {
         $post = $this->model("Post");
@@ -174,13 +173,13 @@ class Blog extends Controller
         break;
 
       case "new":
-        $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
+        $unPublishedPostModels = Database::getPostsByBlog($this->blog, $options);
         $postModel->loadStatusOptions();
         break;
 
       default:
         //get $post from database and fill forms
-        $unPublishedPostModels = (new Database())->getPostsByBlog($this->blog, $options);
+        $unPublishedPostModels = Database::getPostsByBlog($this->blog, $options);
         $postModel->loadStatusOptions();
         $postModel->prepare($post, $this->blog);
         break;

@@ -59,6 +59,6 @@ class App
 
     private function blog_exists($blog)
     {
-        return (new Database())->blog_exists($blog);
+      return Database::getInstance()->blog_exists($blog);
     }
 }

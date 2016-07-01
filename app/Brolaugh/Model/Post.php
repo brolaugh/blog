@@ -4,7 +4,7 @@ namespace Brolaugh\Model;
 use Brolaugh\Core\Controller;
 use \Brolaugh\Core\Database;
 
-class Post extends Database
+class Post
 {
   public $id;
   public $blog;
@@ -45,7 +45,7 @@ class Post extends Database
 
   private function getPostByURLTitle($urlTitle, $blog)
   {
-    $stmt = $this->database_connection->prepare("SELECT * FROM post WHERE url_title = ? AND blog = ?");
+    $stmt = Database::prepare("SELECT * FROM post WHERE url_title = ? AND blog = ?");
     $stmt->bind_param("si", $urlTitle, $blog);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -56,7 +56,7 @@ class Post extends Database
 
   public function getSideMenuItems($blog)
   {
-    $stmt = $this->database_connection->prepare("SELECT url_title, title FROM post WHERE blog = ? AND status = 4 ORDER BY publishing_time");
+    $stmt = Database::prepare("SELECT url_title, title FROM post WHERE blog = ? AND status = 4 ORDER BY publishing_time");
     $stmt->bind_param("i", $blog);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -91,7 +91,7 @@ class Post extends Database
 
   public function loadStatusOptions()
   {
-    $stmt = $this->database_connection->prepare("SELECT * FROM post_status");
+    $stmt = Database::prepare("SELECT * FROM post_status");
     $stmt->execute();
     $res = $stmt->get_result();
     $stmt->free_result();
@@ -105,7 +105,7 @@ class Post extends Database
 
   private function getPostByID($postID)
   {
-    $stmt = $this->database_connection->prepare("SELECT * FROM post WHERE id = ?");
+    $stmt = Database::prepare("SELECT * FROM post WHERE id = ?");
     $stmt->bind_param("i", $postID);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -130,7 +130,7 @@ class Post extends Database
   //Sends the data to the database as a new row
   private function sendPost($blog)
   {
-    $stmt = $this->database_connection->prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) VALUES(?,?,?,?,?, NOW(), NOW())");
+    $stmt = Database::prepare("INSERT INTO post(blog, title, url_title, content, status, create_time, publishing_time) VALUES(?,?,?,?,?, NOW(), NOW())");
     $stmt->bind_param('isssi', $blog->blog, $blog->title, $blog->url_title, $blog->content, $blog->status);
     $retval = $stmt->execute();
 
@@ -145,7 +145,7 @@ class Post extends Database
 
   private function doesURLTitleExistInBlog($urlTitle, $blog)
   {
-    $stmt = $this->database_connection->prepare("SELECT id FROM post WHERE url_title = ? AND blog = ?");
+    $stmt = Database::prepare("SELECT id FROM post WHERE url_title = ? AND blog = ?");
     $stmt->bind_param("si", $urlTitle, $blog);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -157,7 +157,7 @@ class Post extends Database
 
   private function getTagsFromPostID($postID)
   {
-    $stmt = $this->database_connection->prepare("SELECT tag.name FROM post_tag LEFT JOIN tag ON post_tag.tag=tag.id WHERE post_tag.post = ?");
+    $stmt = Database::prepare("SELECT tag.name FROM post_tag LEFT JOIN tag ON post_tag.tag=tag.id WHERE post_tag.post = ?");
     $stmt->bind_param("i", $postID);
     $stmt->execute();
     $res = $stmt->get_result();
