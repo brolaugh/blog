@@ -6,12 +6,7 @@ class Controller
   private $twig;
   public function __construct(){
     $loader = new \Twig_Loader_Filesystem('../app/Brolaugh/views/');
-    $this->twig = new \Twig_Environment($loader, [
-      'cache' => "../twigcache/",
-      'debug' => true,
-      'auto_reload' => true,
-      'autoescape' => false,
-    ]);
+    $this->twig = new \Twig_Environment($loader, $GLOBALS['config']['twig']);
   }
 
   public static function model($model)

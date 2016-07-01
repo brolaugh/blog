@@ -10,3 +10,6 @@ vendor/**
 
 # Twig
 /twigcache/**
+
+#project configs
+app/config.php
