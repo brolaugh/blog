@@ -10,7 +10,7 @@ class App
 
     public function __construct()
     {
-        $blog = "";
+      $blog = "";
         $url = $this->parseUrl();
         if (file_exists('../app/Brolaugh/Controllers/' . $url[0] . '.php')) {
             if ($url[0] != 'Blog')

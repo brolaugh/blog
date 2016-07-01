@@ -5,7 +5,8 @@
     }
   },
   "require": {
-    "erusev/parsedown": "^1.6"
+    "erusev/parsedown": "^1.6",
+    "twig/twig": "^1.24"
   },
   "require-dev": {
     "joseph-lenton/php-error": ">=1.0.0-dev"

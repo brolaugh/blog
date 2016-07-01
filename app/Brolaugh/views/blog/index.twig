@@ -1,0 +1,32 @@
+{% extends 'base.twig' %}
+{% block head %}
+  {% include 'blog/head.twig'%}
+{% endblock %}
+
+{% block body %}
+  {% include 'blog/header.twig'%}
+
+<div class="container-fluid">
+    <div class="row">
+        {% include 'blog/sidemenu.twig'%}
+
+        <main class="col-md-8">
+            <div id="posts">
+                {% for post in posts %}
+                    {% include 'blog/post/post.twig'%}
+                {% else %}
+                    <p>
+                      I'm sorry to say that there is no posts.
+                    </p>
+                {% endfor %}
+            </div>
+            {% include 'base/pagination.twig' %}
+        </main>
+        <aside class="col-md-2">
+            Ads
+        </aside>
+    </div>
+
+
+</div>
+{% endblock %}
