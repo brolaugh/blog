@@ -1,0 +1,26 @@
+{% extends 'account/base.twig' %}
+
+{% block form %}
+  <form class="form-horizontal" action="/account/login/send" method="post">
+    <fieldset>
+      <div class="form-group">
+        <label for="login-email" class="col-md-2 control-label text-primary">Email</label>
+        <div class="col-md-10">
+          <input type="email" name="login-email" class="form-control" placeholder="Email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="login-password" class="col-md-2 control-label text-primary">Password</label>
+        <div class="col-md-10">
+          <input type="password" name="login-password" class="form-control" placeholder="Password">
+        </div>
+      </div>
+      <input type="hidden" name="csrf_token" value="{{user.csrf_token}}">
+      <div class="form-group">
+        <div class="col-md-10">
+          <input type="submit" name="login-submit" class="btn btn-raised" value="Login">
+        </div>
+      </div>
+    </fieldset>
+  </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.twig' %}
+
+{% block head %}
+  {% include 'blog/head.twig' %}
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    {% block header %}
+      <div class="jumbotron">
+        <h1>BlogBro</h1>
+      </div>
+    {% endblock %}
+    <div class="well">
+      {% block form %}{% endblock %}
+    </div>
+
+  </div>
+
+
+{% endblock %}

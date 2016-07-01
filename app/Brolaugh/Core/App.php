@@ -12,7 +12,7 @@ class App
     {
       $blog = "";
         $url = $this->parseUrl();
-        if (file_exists('../app/Brolaugh/Controllers/' . $url[0] . '.php')) {
+        if (file_exists('../app/Brolaugh/Controllers/' . ucfirst($url[0]) . '.php')) {
             if ($url[0] != 'Blog')
                 $this->controller = $url[0];
             unset($url[0]);
@@ -24,10 +24,10 @@ class App
 
 
         if ($this->controller == 'Blog') {
-            $controller = "\\Brolaugh\\Controllers\\" . $this->controller;
+            $controller = "\\Brolaugh\\Controllers\\" . ucfirst($this->controller);
             $this->controller = new $controller($blog);
         } else {
-            $controller = "\\Brolaugh\\Controllers\\" . $this->controller;
+            $controller = "\\Brolaugh\\Controllers\\" . ucfirst($this->controller);
             $this->controller = new $controller($blog);
         }
 

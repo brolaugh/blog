@@ -1,0 +1,38 @@
+{% extends 'account/base.twig' %}
+
+{% block form %}
+  <form class="form-horizontal" action="/account/register/send" method="post">
+    <fieldset>
+      <div class="form-group">
+        <label for="register-email" class="col-md-2 control-label text-primary">Email</label>
+        <div class="col-md-10">
+          <input type="email" name="register-email" class="form-control" placeholder="Email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="register-username" class="col-md-2 control-label text-primary">Username</label>
+        <div class="col-md-10">
+          <input type="text" name="register-username" class="form-control" placeholder="Username">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="register-password" class="col-md-2 control-label text-primary">Password</label>
+        <div class="col-md-10">
+          <input type="password" name="register-password" class="form-control" placeholder="Password">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="register-password-confirm" class="col-md-2 control-label text-primary">Confirm password</label>
+        <div class="col-md-10">
+          <input type="password" name="register-password-confirm" class="form-control" placeholder="Password">
+        </div>
+      </div>
+      <input type="hidden" name="csrf_token" value="{{user.csrf_token}}">
+      <div class="form-group">
+        <div class="col-md-10">
+          <input type="submit" name="register-submit" class="btn btn-raised" value="register">
+        </div>
+      </div>
+    </fieldset>
+  </form>
+{% endblock %}
