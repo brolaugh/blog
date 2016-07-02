@@ -17,6 +17,13 @@ class Config{
       'session' => [
           'session_name' => 'logged_in_session',
       ],
+      'cookie_options' => [
+          'expiry' => 604800,
+          'domain' => 'localhost',
+          'path' => '/',
+          'secure' => false,
+          'httponly' => true,
+      ],
       'twig' => [
           'cache' => "../twigcache/",
           'debug' => true,
