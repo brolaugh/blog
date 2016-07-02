@@ -49,8 +49,14 @@ class User
     $stmt->execute();
     $res = $stmt->get_result();
     if($row = $res->fetch_object()){
-      password_verify($_POST['login-password'],$row->password);
-      echo "User {$this->email} logged in";
+      if(password_verify($_POST['login-password'],$row->password)){
+        $_SESSION[Config::get('session/session_name')] = bin2hex(random_bytes(60));
+        echo "User {$this->email} logged in";
+      }else{
+        echo "Login failed";
+      }
+
+
     }else
       echo "Login failed";
 
@@ -62,10 +68,7 @@ class User
     var_dumpi($stmt->execute());
   }
   public function isLoggedIn(){
-    if(isset($_SESSION[Config::get('session/session_name')])){
-      echo "Session set<br/> value: ", $_SESSION[Config::get('session/session_name')];
-      die();
-    }
+    return isset($_SESSION[Config::get('session/session_name')]) ?  "Session set<br/> value: ". $_SESSION[Config::get('session/session_name')] : false;
   }
 
   private static function emailRegistered($email){
