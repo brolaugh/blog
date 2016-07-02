@@ -54,8 +54,9 @@ class User extends Visitor
     $validator->validate([
         'register-username|Username' => [$this->username, 'required|min(3)|max(40)|validUsername|uniqueUsername'],
         'register-email|Email' => [$this->email, 'required|email|max(255)|uniqueEmail'],
-        'register-password|Password' => [$this->password, 'required|min(8)|'],
+        'register-password|Password' => [$this->password, 'required|min(8)'],
         'register-password-confirm|Password confirmation' => [$passwordConfirm, 'required|matches(register-password)'],
+        'token' => [$this->token, 'required|validToken'],
         ]);
 
     if ($validator->fails()) {

@@ -18,8 +18,8 @@ class Token
     if(Session::exists($tokenName) && $token == Session::get($tokenName)){
       Session::delete($tokenName);
       return true;
-    }
-    return false;
+    }else
+      return false;
 
   }
 }
