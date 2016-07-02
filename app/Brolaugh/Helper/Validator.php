@@ -15,7 +15,6 @@ class Validator extends Violin
     $this->addRuleMessage('validUsername', 'Usernames may include letters, digits and -_.');
     $this->addRuleMessage('uniqueEmail', '{field} is already in use as an email');
     $this->addRuleMessage('validToken', 'The form token was not valid, please try again');
-
   }
 
   public function validate_validUsername($value, $input, $args)
@@ -41,9 +40,6 @@ class Validator extends Violin
 
   public function validate_validToken($value, $input, $args)
   {
-
     return Token::check($value);
   }
-
-
 }
