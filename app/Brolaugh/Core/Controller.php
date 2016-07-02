@@ -3,18 +3,24 @@ namespace Brolaugh\Core;
 
 use Brolaugh\Config;
 
+
 class Controller
 {
   private $twig;
+  protected $visitor;
+
   public function __construct(){
     $loader = new \Twig_Loader_Filesystem('../app/Brolaugh/views/');
     $this->twig = new \Twig_Environment($loader, Config::get('twig'));
+    $this->visitor = $this->model("Visitor");
   }
 
-  public static function model($model)
+  public static function model($model, $modelArgs = [])
   {
     $model = '\Brolaugh\Model\\' . $model;
-    return new $model;
+
+    $r = new \ReflectionClass($model);
+    return $r->newInstanceArgs($modelArgs);
   }
 
   public function view($view, $data = [])

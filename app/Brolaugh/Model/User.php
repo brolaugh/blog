@@ -3,14 +3,24 @@ namespace Brolaugh\Model;
 
 use \Brolaugh\Core\Database;
 use \Brolaugh\Config;
+use Brolaugh\Helper\Token;
 
-class User
+class User extends Visitor
 {
   protected $id;
   public $username;
   private $password;
   private $email;
-  private $lastCsrfRequest;
+  private $cookie;
+
+  public function __construct($visitor = false)
+  {
+    if($visitor instanceof Visitor){
+      $this->token = $visitor->token;
+    }
+
+    $this->cookie = isset($_COOKIE[Config::get('remember/cookie_name')]) ? $_COOKIE[Config::get('remember/cookie_name')] : false;
+  }
 
   public function prepare($id)
   {
@@ -31,10 +41,12 @@ class User
   }
   public function register(){
     $this->username = $_POST['register-username'];
-    if($_POST['register-password'] != $_POST['register-password-confirm']){
-      //Redirect back to register with non matching password error
-    }elseif (!$this->emailRegistered($_POST['register-email'])){
-      // Redirect back to register with email used error
+    if(Token::check(Config::get('session/session_name')))
+      die("Token invalid");
+    elseif($_POST['register-password'] != $_POST['register-password-confirm'])
+      die("Non matching password");
+    elseif (!$this->emailRegistered($_POST['register-email'])){
+      die("Email already used");
     } else{
       $this->password = password_hash($_POST['register-password'], PASSWORD_BCRYPT,Config::get('hashing'));
       $this->email = $_POST['register-email'];
@@ -43,6 +55,10 @@ class User
 
   }
   public function login(){
+    if(Token::check(Config::get('session/session_name')))
+      die("Token invalid");
+
+
     $this->email = $_POST['login-email'];
     $stmt = Database::prepare("SELECT * FROM user WHERE email = ?");
     $stmt->bind_param('s', $this->email);
@@ -70,7 +86,7 @@ class User
   public function isLoggedIn(){
     return isset($_SESSION[Config::get('session/session_name')]) ?  "Session set<br/> value: ". $_SESSION[Config::get('session/session_name')] : false;
   }
-
+  
   private static function emailRegistered($email){
     $stmt = Database::prepare("SELECT email FROM user WHERE email = ?");
     $stmt->bind_param('s', $email);

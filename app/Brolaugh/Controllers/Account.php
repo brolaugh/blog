@@ -14,7 +14,9 @@ class Account extends Controller
   public function __construct(){
     parent::__construct();
 
-    $this->userModel = $this->model("User");
+    $this->userModel = $this->model("User", [
+      $this->visitor
+    ]);
   }
   public function index($args){
     if(!$this->userModel->isloggedIn())
@@ -38,9 +40,9 @@ class Account extends Controller
     if($args[0] == 'send'){
       $this->userModel->register();
     } else
-      $this->view("account/register",
-          ['user' => $this->userModel]
-          );
+      $this->view("account/register", [
+        'user' => $this->userModel,
+          ]);
 
   }
 }
