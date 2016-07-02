@@ -30,14 +30,10 @@
             <div class="form-group">
                 <label for="compose-tags" class="control-label col-md-2 text-primary">Tags</label>
                 <div class="col-md-10">
-                    <input type="text" id="compose-tags" name="compose-tags"
+                    <input type="text" id="compose-tags" name="compose-tags" value="{% for tag in post.tags %}{{tag}},{% endfor %}"
                            placeholder="Write your tags seperated by comma(,)"
                            class="form-control"
-                           autocomplete="off">
-                           {% for tag in post.tags %}
-                               {{tag}},
-                           {% endfor %}
-                         </input>
+                           autocomplete="off"/>
                 </div>
             </div>
             <div class="form-group">
