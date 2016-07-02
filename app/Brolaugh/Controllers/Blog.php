@@ -5,9 +5,11 @@ namespace Brolaugh\Controllers;
 use Brolaugh\Core\Controller;
 use Brolaugh\Core\Database;
 use Brolaugh\ViewModel\Author as ViewAuthor;
+use Brolaugh\ViewModel\Author;
 use Brolaugh\ViewModel\Blog as ViewBlog;
 use Brolaugh\ViewModel\Post as ViewPost;
 use Brolaugh\ViewModel\Utility as ViewUtility;
+use Brolaugh\ViewModel\Visitor;
 
 
 class Blog extends Controller
@@ -152,7 +154,7 @@ class Blog extends Controller
           "post" => new ViewPost($postModel),
           "author" => new ViewAuthor($this->authorModel),
           "sideMenuItems" => $this->multiConstruct($this->sideMenuItems),
-          "utility" => new ViewUtility($this->utilityModel)
+          "utility" => new ViewUtility($this->utilityModel),
       ]);
     }
   }
@@ -190,7 +192,8 @@ class Blog extends Controller
         "post" => new ViewPost($postModel),
         "author" => new ViewAuthor($this->authorModel),
         "unpublishedPosts" => $this->multiConstruct($unPublishedPostModels),
-        "utility" => new ViewUtility($this->utilityModel)
+        "utility" => new ViewUtility($this->utilityModel),
+        'user' => new Visitor($this->visitor),
     ]);
   }
 

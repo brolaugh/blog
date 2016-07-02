@@ -1,8 +1,10 @@
 <?php
 namespace Brolaugh\Model;
 
+use Brolaugh\Config;
 use Brolaugh\Core\Controller;
 use \Brolaugh\Core\Database;
+use Brolaugh\Helper\Token;
 
 class Post
 {
@@ -73,6 +75,7 @@ class Post
   //Collects data from the compose form and then sends it to the database
   public function send($blog)
   {
+    if(Token::check($_POST[Config::get('session/session_name')]));
     $this->blog = $blog;
     $this->title = $_POST['compose-title'];
     $this->url_title = strtolower(preg_replace('([^a-zA-Z0-9\+\.=_-])', '', str_replace(' ', '_', $_POST['compose-url-title'])));

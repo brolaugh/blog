@@ -11,7 +11,7 @@ class Home extends Controller
   public function index($name = '')
   {
     $user = $this->model('User');
-    $user->name = $name;
+
     $blogs = [];
     foreach( Database::getAllBlogs() as $blog) {
       $newBlog = $this->model("Blog");
@@ -19,7 +19,8 @@ class Home extends Controller
       $blogs[] = $newBlog;
     }
     $this->view('home/index', [
-      'blogs' => $blogs
+      'blogs' => $blogs,
+      'user' => $this->visitor,
     ]);
   }
 }

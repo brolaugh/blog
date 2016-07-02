@@ -3,7 +3,7 @@
 namespace Brolaugh\ViewModel;
 
 
-class User
+class User extends Visitor
 {
   protected $id;
   private $username;
@@ -12,6 +12,7 @@ class User
 
   public function __construct($userModel)
   {
+    parent::__construct($userModel);
     //$this->id = $userModel->id;
     //$this->username = $userModel->username;
     //$this->password = $userModel->password;
