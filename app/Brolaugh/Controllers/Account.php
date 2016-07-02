@@ -20,7 +20,7 @@ class Account extends Controller
     if(!$this->userModel->isloggedIn())
       $this->login($args);
      else{
-
+      
     }
   }
 

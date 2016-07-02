@@ -5,6 +5,8 @@
 */
 namespace Brolaugh\Core;
 
+use Brolaugh\Config;
+
 class Database
 {
   private $_connection;
@@ -26,10 +28,10 @@ class Database
   private function __construct()
   {
     $this->_connection = new \mysqli(
-      $GLOBALS['config']['mysql']['host'],
-        $GLOBALS['config']['mysql']['username'],
-        $GLOBALS['config']['mysql']['password'],
-        $GLOBALS['config']['mysql']['db']
+      Config::get('mysql/host'),
+      Config::get('mysql/username'),
+      Config::get('mysql/password'),
+      Config::get('mysql/db')
     );
     if (!mysqli_connect_errno()) {
       $this->_connection->set_charset('UTF8');

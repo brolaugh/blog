@@ -1,12 +1,14 @@
 <?php
 namespace Brolaugh\Core;
 
+use Brolaugh\Config;
+
 class Controller
 {
   private $twig;
   public function __construct(){
     $loader = new \Twig_Loader_Filesystem('../app/Brolaugh/views/');
-    $this->twig = new \Twig_Environment($loader, $GLOBALS['config']['twig']);
+    $this->twig = new \Twig_Environment($loader, Config::get('twig'));
   }
 
   public static function model($model)

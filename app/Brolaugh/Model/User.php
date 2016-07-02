@@ -2,6 +2,7 @@
 namespace Brolaugh\Model;
 
 use \Brolaugh\Core\Database;
+use \Brolaugh\Config;
 
 class User
 {
@@ -35,7 +36,7 @@ class User
     }elseif (!$this->emailRegistered($_POST['register-email'])){
       // Redirect back to register with email used error
     } else{
-      $this->password = password_hash($_POST['register-password'], PASSWORD_BCRYPT, $GLOBALS['config']['hashing']);
+      $this->password = password_hash($_POST['register-password'], PASSWORD_BCRYPT,Config::get('hashing'));
       $this->email = $_POST['register-email'];
       $this->finishRegistration();
     }
@@ -61,8 +62,8 @@ class User
     var_dumpi($stmt->execute());
   }
   public function isLoggedIn(){
-    if(isset($_SESSION[$GLOBALS['config']['session']['session_name']])){
-      echo "Session set<br/> value: ", $_SESSION[$GLOBALS['config']['session']['session_name']];
+    if(isset($_SESSION[Config::get('session/session_name')])){
+      echo "Session set<br/> value: ", $_SESSION[Config::get('session/session_name')];
       die();
     }
   }

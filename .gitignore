@@ -12,4 +12,4 @@ vendor/**
 /twigcache/**
 
 #project configs
-app/config.php
+app/Brolaugh/config.php
