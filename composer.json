@@ -1,8 +1,9 @@
 {
-  "name": "Brolaugh/blog",
+  "name": "brolaugh/blog",
   "description": "A blogging plattform written in PHP",
   "version": "0.1.0-dev",
   "homepage": "http://blog.brolaugh.com",
+  "license": "Apache-2.0",
   "authors": [
     {
       "name": "Hannes Kindströmmer",
@@ -19,7 +20,8 @@
   },
   "require": {
     "erusev/parsedown": "^1.6",
-    "twig/twig": "^1.24"
+    "twig/twig": "^1.24",
+    "alexgarrett/violin": "2.*"
   },
   "require-dev": {
     "joseph-lenton/php-error": ">=1.0.0-dev"
