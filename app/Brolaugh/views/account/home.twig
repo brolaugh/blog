@@ -1,0 +1,24 @@
+{% extends 'base.twig' %}
+
+{% block head %}
+  {% include 'blog/head.twig' %}
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    {% block header %}
+      <div class="jumbotron">
+        <h1>Account</h1>
+      </div>
+    {% endblock %}
+    <div class="well">
+      <form class="form-horizontal" action="/account/logout" method="post">
+        <input type="hidden" name="token" value="{{ user.token }}">
+        <input type="submit" value="Logout">
+      </form>
+    </div>
+
+  </div>
+
+
+{% endblock %}

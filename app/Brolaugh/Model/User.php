@@ -93,7 +93,7 @@ class User extends Visitor
     if ($row = $res->fetch_object()) {
       if (password_verify($this->password, $row->password)) {
         Session::set(Config::get('session/session_name'), bin2hex(random_bytes(60)));
-        echo "User {$this->email} logged in";
+        return true;
       } else {
         echo "Login failed";
       }
@@ -116,6 +116,20 @@ class User extends Visitor
 
   public function isLoggedIn()
   {
-    return isset($_SESSION[Config::get('session/session_name')]) ? "Session set<br/> value: " . $_SESSION[Config::get('session/session_name')] : false;
+    return isset($_SESSION[Config::get('session/session_name')]);
+  }
+  public function logout(){
+    $validator = new Validator();
+    $validator->validate([
+      'token' => [$this->token, 'required|validToken'],
+    ]);
+    if($validator->passes()){
+      Session::delete(Config::get('session/session_name'));
+      //Add delete login cookie
+      return true;
+    }else{
+      return false;
+    }
+
   }
 }
