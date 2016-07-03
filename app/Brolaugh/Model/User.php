@@ -43,14 +43,15 @@ class User extends Visitor
 
   public function register()
   {
-    $this->username = trim($_POST['register-username']);
-    $this->email = trim($_POST['register-email']);
+    $this->username = isset($_POST['register-username']) ? trim($_POST['register-username']) : '';
+    $this->email = isset($_POST['register-email']) ? trim($_POST['register-email']) : '';
 
-    $this->password = trim($_POST['register-password']);
-    $passwordConfirm = trim($_POST['register-password-confirm']);
+    $this->password = isset($_POST['register-password']) ? trim($_POST['register-password']) : '';
+    $passwordConfirm = isset($_POST['register-password-confirm']) ? trim($_POST['register-password-confirm']) : '';
 
     $validator = new Validator();
     $validator->addRuleMessage('matches', '{field} must match password');
+
     $validator->validate([
         'register-username|Username' => [$this->username, 'required|min(3)|max(40)|validUsername|uniqueUsername'],
         'register-email|Email' => [$this->email, 'required|email|max(255)|uniqueEmail'],
@@ -59,12 +60,13 @@ class User extends Visitor
         'token' => [$this->token, 'required|validToken'],
         ]);
 
-    if ($validator->fails()) {
-      var_dumpi($validator->errors()->all());
-      die();
-    }else {
+    if ($validator->passes()) {
       $this->password = password_hash($this->password, PASSWORD_BCRYPT, Config::get('hashing'));
       $this->finishRegistration();
+      return true;
+    }else {
+      Session::setFlash('errors', $validator->errors()->allWithKey());
+      return false;
     }
   }
 
@@ -80,7 +82,7 @@ class User extends Visitor
       'login-password|Password' => [$this->password, 'required|min(8)'],
     ]);
     if($validator->fails()){
-      var_dumpi($validator->errors()->all());
+      var_dumpi($validator->errors);
       die();
     }
 
@@ -106,7 +108,10 @@ class User extends Visitor
   {
     $stmt = Database::prepare("INSERT INTO user(email, username, password, joined, `group`) VALUES(?,?,?, NOW(), 1)");
     $stmt->bind_param('sss', $this->email, $this->username, $this->password);
-    var_dumpi($stmt->execute());
+    if(!$stmt->execute())
+      throw new \Exception("Something went wrong when registering the new user");
+    $stmt->close();
+    return true;
   }
 
   public function isLoggedIn()

@@ -5,29 +5,34 @@ namespace Brolaugh\Controllers;
 
 
 use Brolaugh\Core\Controller;
+use Brolaugh\Helper\Session;
 
 
 class Account extends Controller
 {
   private $userModel;
 
-  public function __construct(){
+  public function __construct()
+  {
     parent::__construct();
 
     $this->userModel = $this->model("User", [
-      $this->visitor
+        $this->visitor
     ]);
   }
-  public function index($args){
-    if(!$this->userModel->isloggedIn())
+
+  public function index($args)
+  {
+    if (!$this->userModel->isloggedIn())
       $this->login($args);
-     else{
+    else {
       echo "Logged in";
     }
   }
 
-  public function login($args){
-    if($args[0] == 'send'){
+  public function login($args)
+  {
+    if ($args[0] == 'send') {
       $this->userModel->login();
     } else
       $this->view("account/login", [
@@ -36,13 +41,20 @@ class Account extends Controller
 
 
   }
-  public function register($args){
-    if($args[0] == 'send'){
-      $this->userModel->register();
+
+  public function register($args)
+  {
+    if ($args[0] == 'send') {
+      if ($this->userModel->register()) {
+        header('Location:/account/login');
+      } else {
+        header('Location:/account/register');
+      }
     } else
       $this->view("account/register", [
         'user' => $this->userModel,
-          ]);
+        'errors' => Session::getFlash('errors'),
+      ]);
 
   }
 }

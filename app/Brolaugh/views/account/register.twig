@@ -7,24 +7,44 @@
         <label for="register-email" class="col-md-2 control-label text-primary">Email</label>
         <div class="col-md-10">
           <input type="email" name="register-email" class="form-control" placeholder="Email">
+          {% for error in errors['register-email'] %}
+              <p class="text-danger">
+                {{error}}
+              </p>
+          {% endfor %}
         </div>
       </div>
       <div class="form-group">
         <label for="register-username" class="col-md-2 control-label text-primary">Username</label>
         <div class="col-md-10">
           <input type="text" name="register-username" class="form-control" placeholder="Username">
+          {% for error in errors['register-username'] %}
+              <p class="text-danger">
+                {{error}}
+              </p>
+          {% endfor %}
         </div>
       </div>
       <div class="form-group">
         <label for="register-password" class="col-md-2 control-label text-primary">Password</label>
         <div class="col-md-10">
           <input type="password" name="register-password" class="form-control" placeholder="Password">
+          {% for error in errors['register-password'] %}
+              <p class="text-danger">
+                {{error}}
+              </p>
+          {% endfor %}
         </div>
       </div>
       <div class="form-group">
         <label for="register-password-confirm" class="col-md-2 control-label text-primary">Confirm password</label>
         <div class="col-md-10">
           <input type="password" name="register-password-confirm" class="form-control" placeholder="Password">
+          {% for error in errors['register-password-confirm'] %}
+              <p class="text-danger">
+                {{error}}
+              </p>
+          {% endfor %}
         </div>
       </div>
       <input type="hidden" name="token" value="{{ user.token }}">
